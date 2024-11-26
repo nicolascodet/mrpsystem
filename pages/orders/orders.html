@@ -3,172 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide MRP - Orders</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <title>Orders - Guide MRP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50">
-    <!-- Same sidebar as index.html -->
-    
-    <div class="ml-64 p-8">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h2 class="text-3xl font-bold text-gray-800">Orders</h2>
-                <p class="text-gray-600">Manage production orders</p>
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="fixed h-full w-64 bg-white border-r border-gray-200 p-4">
+            <div class="flex items-center space-x-2 mb-8">
+                <h1 class="text-2xl font-bold text-gray-800">Guide MRP</h1>
             </div>
-            <button onclick="showNewOrderForm()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                New Order
-            </button>
+            
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="index.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                    Dashboard
+                </a>
+                <a href="orders.html" class="flex items-center space-x-2 p-2 rounded-lg bg-blue-50 text-blue-700">
+                    Orders
+                </a>
+                <a href="inventory.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                    Inventory
+                </a>
+                <a href="manufacturing.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
+                    Manufacturing
+                </a>
+            </nav>
         </div>
 
-        <!-- Order Management Tabs -->
-        <div class="mb-8">
-            <div class="border-b border-gray-200">
-                <nav class="-mb-px flex space-x-8">
-                    <a href="#" class="border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
-                        Active Orders
-                    </a>
-                    <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                        Pending
-                    </a>
-                    <a href="#" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                        Completed
-                    </a>
-                </nav>
-            </div>
-        </div>
-
-        <!-- Orders Table -->
-        <div class="bg-white rounded-lg shadow">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Order ID
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Customer
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Product
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Quantity
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Due Date
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="ordersTableBody">
-                    <!-- Orders will be inserted here by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- New Order Modal -->
-    <div id="newOrderModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full">
-            <h3 class="text-lg font-medium mb-4">New Production Order</h3>
-            <form id="newOrderForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Customer</label>
-                    <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Product</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                        <option>Select product</option>
-                        <!-- Products will be loaded dynamically -->
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Due Date</label>
-                    <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                </div>
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="hideNewOrderForm()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">
-                        Create Order
+        <!-- Main Content -->
+        <div class="ml-64 p-8 flex-1">
+            <h1 class="text-2xl font-bold mb-4">Orders</h1>
+            
+            <!-- Orders Table -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Current Orders</h2>
+                    <button onclick="alert('New Order')" class="bg-blue-500 text-white px-4 py-2 rounded">
+                        New Order
                     </button>
                 </div>
-            </form>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4">ORD-001</td>
+                            <td class="px-6 py-4">Acme Corp</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Active
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-900">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <script>
-        // Sample data - this would normally come from a database
-        const orders = [
-            {
-                id: 'ORD001',
-                customer: 'Acme Corp',
-                product: 'Plastic Widget A',
-                quantity: 1000,
-                dueDate: '2024-12-01',
-                status: 'In Progress'
-            },
-            // Add more sample orders
-        ];
-
-        // Function to render orders table
-        function renderOrders() {
-            const tableBody = document.getElementById('ordersTableBody');
-            tableBody.innerHTML = orders.map(order => `
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${order.id}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">${order.customer}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">${order.product}</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${order.quantity}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${order.dueDate}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            ${order.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                        <button class="ml-2 text-red-600 hover:text-red-900">Delete</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Modal functions
-        function showNewOrderForm() {
-            document.getElementById('newOrderModal').classList.remove('hidden');
-        }
-
-        function hideNewOrderForm() {
-            document.getElementById('newOrderModal').classList.add('hidden');
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderOrders();
-        });
-    </script>
 </body>
 </html>
