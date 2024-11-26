@@ -1,73 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory - Guide MRP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50">
-    <div class="flex">
-        <!-- Sidebar -->
-        <div class="fixed h-full w-64 bg-white border-r border-gray-200 p-4">
-            <div class="flex items-center space-x-2 mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Guide MRP</h1>
-            </div>
-            
-            <!-- Navigation -->
-            <nav class="space-y-2">
-                <a href="index.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
-                    Dashboard
-                </a>
-                <a href="orders.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
-                    Orders
-                </a>
-                <a href="inventory.html" class="flex items-center space-x-2 p-2 rounded-lg bg-blue-50 text-blue-700">
-                    Inventory
-                </a>
-                <a href="manufacturing.html" class="flex items-center space-x-2 p-2 rounded-lg text-gray-600 hover:bg-gray-50">
-                    Manufacturing
-                </a>
-            </nav>
+<body class="bg-gray-100">
+    <div class="p-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="text-blue-600 hover:underline">← Back to Dashboard</a>
         </div>
 
-        <!-- Main Content -->
-        <div class="ml-64 p-8 flex-1">
-            <h1 class="text-2xl font-bold mb-4">Inventory Management</h1>
-            
-            <!-- Inventory Overview -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex justify-between mb-4">
-                    <h2 class="text-lg font-semibold">Raw Materials</h2>
-                    <button onclick="alert('Add Material')" class="bg-blue-500 text-white px-4 py-2 rounded">
-                        Add Material
-                    </button>
-                </div>
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Material</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4">HDPE Natural</td>
-                            <td class="px-6 py-4">500 kg</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    In Stock
-                                </span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <button class="text-blue-600 hover:text-blue-900">Update</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <h1 class="text-3xl font-bold mb-8">Inventory</h1>
+        
+        <!-- Simple Inventory List -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="mb-4">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded">Add Material</button>
             </div>
+            
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left py-2">Material</th>
+                        <th class="text-left py-2">Quantity</th>
+                        <th class="text-left py-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="py-2">HDPE Natural</td>
+                        <td>500 kg</td>
+                        <td>In Stock</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2">PP Black</td>
+                        <td>200 kg</td>
+                        <td>Low Stock</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
