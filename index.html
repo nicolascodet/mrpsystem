@@ -4,28 +4,130 @@
     <title>Guide MRP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <div class="p-8">
-        <h1 class="text-3xl font-bold mb-8">Guide MRP Dashboard</h1>
-        
-        <!-- Navigation Cards -->
+<body class="bg-neutral-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-stone-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Guide MRP</h1>
+            <div class="flex space-x-4">
+                <button class="hover:text-stone-300">Notifications</button>
+                <button class="hover:text-stone-300">Settings</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <!-- Quick Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-600">
+                <h3 class="text-sm font-medium text-gray-500">Today's Production</h3>
+                <p class="text-2xl font-bold">5,234</p>
+                <p class="text-green-600 text-sm">↑ 12% from yesterday</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-600">
+                <h3 class="text-sm font-medium text-gray-500">Active Orders</h3>
+                <p class="text-2xl font-bold">18</p>
+                <p class="text-blue-600 text-sm">3 due this week</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-amber-600">
+                <h3 class="text-sm font-medium text-gray-500">Machine Utilization</h3>
+                <p class="text-2xl font-bold">85%</p>
+                <p class="text-amber-600 text-sm">8/10 machines active</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-stone-600">
+                <h3 class="text-sm font-medium text-gray-500">Material Alerts</h3>
+                <p class="text-2xl font-bold">2</p>
+                <p class="text-stone-600 text-sm">Low stock warnings</p>
+            </div>
+        </div>
+
+        <!-- Main Navigation Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Dashboard Card -->
-            <a href="index.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg">
-                <h2 class="text-xl font-bold mb-2">Dashboard</h2>
-                <p class="text-gray-600">Overview and statistics</p>
+            <!-- Production Management -->
+            <a href="orders.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Production</h2>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Active</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Manage Orders</li>
+                    <li>• Production Schedule</li>
+                    <li>• Machine Status</li>
+                    <li>• Quality Control</li>
+                </ul>
             </a>
 
-            <!-- Orders Card -->
-            <a href="orders.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg">
-                <h2 class="text-xl font-bold mb-2">Orders</h2>
-                <p class="text-gray-600">Manage production orders</p>
+            <!-- Inventory Management -->
+            <a href="inventory.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Inventory</h2>
+                    <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded">2 Alerts</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Raw Materials</li>
+                    <li>• Finished Goods</li>
+                    <li>• Material Planning</li>
+                    <li>• Supplier Management</li>
+                </ul>
             </a>
 
-            <!-- Inventory Card -->
-            <a href="inventory.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg">
-                <h2 class="text-xl font-bold mb-2">Inventory</h2>
-                <p class="text-gray-600">Check stock levels</p>
+            <!-- Mold Management -->
+            <a href="molds.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Molds</h2>
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">12 Active</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Mold Library</li>
+                    <li>• Maintenance Schedule</li>
+                    <li>• Shot Count Tracking</li>
+                    <li>• Repair History</li>
+                </ul>
+            </a>
+
+            <!-- Quality Control -->
+            <a href="quality.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Quality</h2>
+                    <span class="bg-stone-100 text-stone-800 text-xs font-medium px-2.5 py-0.5 rounded">98.5%</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Inspection Reports</li>
+                    <li>• Defect Tracking</li>
+                    <li>• Process Parameters</li>
+                    <li>• Quality Metrics</li>
+                </ul>
+            </a>
+
+            <!-- Machine Management -->
+            <a href="machines.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Machines</h2>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">8 Running</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Machine Status</li>
+                    <li>• Maintenance Logs</li>
+                    <li>• Performance Metrics</li>
+                    <li>• Setup Sheets</li>
+                </ul>
+            </a>
+
+            <!-- Reports -->
+            <a href="reports.html" class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-stone-800">Reports</h2>
+                    <span class="bg-stone-100 text-stone-800 text-xs font-medium px-2.5 py-0.5 rounded">Analytics</span>
+                </div>
+                <ul class="text-gray-600 space-y-2">
+                    <li>• Production Reports</li>
+                    <li>• Cost Analysis</li>
+                    <li>• Quality Metrics</li>
+                    <li>• Efficiency Reports</li>
+                </ul>
             </a>
         </div>
     </div>
