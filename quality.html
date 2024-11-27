@@ -18,7 +18,34 @@
     </nav>
 
     <div class="container mx-auto p-8">
-        <!-- Quick Actions -->
+        <!-- Quality Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                <h3 class="text-sm font-medium text-gray-500">Quality Rate</h3>
+                <p class="text-2xl font-bold">98.5%</p>
+                <p class="text-green-600 text-sm">Above target</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-amber-500">
+                <h3 class="text-sm font-medium text-gray-500">Defects Today</h3>
+                <p class="text-2xl font-bold">23</p>
+                <p class="text-amber-600 text-sm">1.5% of production</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                <h3 class="text-sm font-medium text-gray-500">Inspections</h3>
+                <p class="text-2xl font-bold">45</p>
+                <p class="text-blue-600 text-sm">Today's checks</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-red-500">
+                <h3 class="text-sm font-medium text-gray-500">Open Issues</h3>
+                <p class="text-2xl font-bold">2</p>
+                <p class="text-red-600 text-sm">Requires attention</p>
+            </div>
+        </div>
+
+        <!-- Quality Actions -->
         <div class="flex justify-between mb-8">
             <div class="flex space-x-4">
                 <button class="bg-stone-800 text-white px-6 py-2 rounded-lg hover:bg-stone-700">
@@ -34,86 +61,76 @@
             </div>
         </div>
 
-        <!-- Quality Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
-                <h3 class="text-sm font-medium text-gray-500">First Pass Yield</h3>
-                <p class="text-2xl font-bold">98.5%</p>
-                <p class="text-green-600 text-sm">↑ 0.5% from last week</p>
-            </div>
-            
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-amber-500">
-                <h3 class="text-sm font-medium text-gray-500">Defect Rate</h3>
-                <p class="text-2xl font-bold">1.2%</p>
-                <p class="text-amber-600 text-sm">↓ 0.3% from last week</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
-                <h3 class="text-sm font-medium text-gray-500">Inspections Today</h3>
-                <p class="text-2xl font-bold">24</p>
-                <p class="text-blue-600 text-sm">5 pending</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-stone-500">
-                <h3 class="text-sm font-medium text-gray-500">Open Issues</h3>
-                <p class="text-2xl font-bold">3</p>
-                <p class="text-stone-600 text-sm">2 high priority</p>
-            </div>
-        </div>
-
         <!-- Latest Inspections -->
         <div class="bg-white rounded-lg shadow mb-8">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-bold text-stone-800">Latest Inspections</h2>
+                <h2 class="text-xl font-bold">Latest Inspections</h2>
             </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-stone-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Time</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Product</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Machine</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Batch</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Result</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Inspector</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr class="hover:bg-stone-50">
-                            <td class="px-6 py-4 text-sm">10:30 AM</td>
-                            <td class="px-6 py-4 text-sm">Container A</td>
-                            <td class="px-6 py-4 text-sm">M01</td>
-                            <td class="px-6 py-4 text-sm">BA12345</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Passed
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-sm">John D.</td>
-                            <td class="px-6 py-4 text-sm">
-                                <a href="#" class="text-stone-600 hover:text-stone-900">View Report</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Machine</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Result</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Inspector</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4">10:30 AM</td>
+                        <td class="px-6 py-4">Container A</td>
+                        <td class="px-6 py-4">Machine 1</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full bg-green-100 text-green-800">Pass</span>
+                        </td>
+                        <td class="px-6 py-4">John D.</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4">10:15 AM</td>
+                        <td class="px-6 py-4">Widget B</td>
+                        <td class="px-6 py-4">Machine 2</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full bg-red-100 text-red-800">Fail</span>
+                        </td>
+                        <td class="px-6 py-4">Sarah M.</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <!-- Quality Issues -->
         <div class="bg-white rounded-lg shadow">
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-bold text-stone-800">Open Quality Issues</h2>
+                <h2 class="text-xl font-bold">Open Quality Issues</h2>
             </div>
-            <div class="p-6 space-y-4">
-                <div class="flex items-center justify-between bg-red-50 p-4 rounded-lg">
-                    <div>
-                        <h3 class="font-medium text-red-800">Dimensional Issue - Container A</h3>
-                        <p class="text-sm text-red-600">Wall thickness variation detected</p>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-medium text-red-800">Dimensional Issue - Container A</h3>
+                                <p class="text-sm text-red-600">Wall thickness variation detected</p>
+                            </div>
+                            <button class="text-red-700 hover:text-red-900">Review</button>
+                        </div>
                     </div>
-                    <button class="text-red-700 hover:text-red-900">
-                        Review
-                    </button>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-medium text-yellow-800">Surface Defect - Widget B</h3>
+                                <p class="text-sm text-yellow-600">Minor flash observed</p>
+                            </div>
+                            <button class="text-yellow-700 hover:text-yellow-900">Review</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
