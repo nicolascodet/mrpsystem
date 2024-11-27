@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Machine Management - Guide MRP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-neutral-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-stone-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-xl font-bold">Guide MRP</a>
+                <span class="text-stone-400">|</span>
+                <h1 class="text-lg">Machine Management</h1>
+            </div>
+            <a href="index.html" class="text-stone-300 hover:text-white">← Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <!-- Machine Status Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Machine Status</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span>Machine 1</span>
+                        <span class="px-2 py-1 rounded-full bg-green-100 text-green-800">Running</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Machine 2</span>
+                        <span class="px-2 py-1 rounded-full bg-red-100 text-red-800">Stopped</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Machine 3</span>
+                        <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">Maintenance</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Production Summary</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span>Total Parts Today</span>
+                        <span class="font-bold">12,450</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Runtime</span>
+                        <span class="font-bold">85%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Maintenance</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span>Next Scheduled</span>
+                        <span class="font-bold">Dec 15</span>
+                    </div>
+                    <button class="w-full bg-stone-800 text-white px-4 py-2 rounded-lg">
+                        Schedule Service
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Machine List -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold">Machine Details</h2>
+            </div>
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Machine ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Current Job</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Efficiency</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4">Machine 1</td>
+                        <td class="px-6 py-4">Product A</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded-full bg-green-100 text-green-800">Running</span>
+                        </td>
+                        <td class="px-6 py-4">92%</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-900">View Details</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
