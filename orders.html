@@ -1,45 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Orders - Guide MRP</title>
+    <title>Production & Orders - Guide MRP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <div class="p-8">
-        <!-- Navigation -->
-        <div class="mb-8">
-            <a href="index.html" class="text-blue-600 hover:underline">← Back to Dashboard</a>
+<body class="bg-neutral-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-stone-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-xl font-bold">Guide MRP</a>
+                <span class="text-stone-400">|</span>
+                <h1 class="text-lg">Production & Orders</h1>
+            </div>
+            <a href="index.html" class="text-stone-300 hover:text-white">← Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <!-- Quick Actions -->
+        <div class="flex justify-between mb-8">
+            <div class="flex space-x-4">
+                <button class="bg-stone-800 text-white px-6 py-2 rounded-lg hover:bg-stone-700">
+                    New Order
+                </button>
+                <button class="bg-stone-100 text-stone-800 px-6 py-2 rounded-lg hover:bg-stone-200">
+                    Production Schedule
+                </button>
+            </div>
+            <div class="flex space-x-4">
+                <button class="text-stone-600 hover:text-stone-800">Filter</button>
+                <button class="text-stone-600 hover:text-stone-800">Export</button>
+            </div>
         </div>
 
-        <h1 class="text-3xl font-bold mb-8">Orders</h1>
-        
-        <!-- Simple Order List -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="mb-4">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">New Order</button>
+        <!-- Active Orders Table -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-stone-800">Active Orders</h2>
             </div>
-            
-            <table class="min-w-full">
-                <thead>
-                    <tr>
-                        <th class="text-left py-2">Order ID</th>
-                        <th class="text-left py-2">Customer</th>
-                        <th class="text-left py-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="py-2">001</td>
-                        <td>Acme Corp</td>
-                        <td>In Progress</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2">002</td>
-                        <td>Tech Inc</td>
-                        <td>Pending</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-stone-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Customer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Due Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-stone-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Acme Corp</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Widget A</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5,000</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dec 15, 2024</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    In Production
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-stone-600 hover:text-stone-900">Edit</a>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-stone-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Tech Inc</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Container B</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2,500</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dec 20, 2024</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-stone-600 hover:text-stone-900">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Production Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-stone-800 mb-4">Machine Status</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Machine 01</span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Running</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Machine 02</span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Stopped</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-stone-800 mb-4">Today's Production</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Total Parts</span>
+                        <span class="font-semibold">12,450</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Defect Rate</span>
+                        <span class="font-semibold text-green-600">1.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-stone-800 mb-4">Material Usage</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">HDPE Natural</span>
+                        <span class="font-semibold">250 kg</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">PP Black</span>
+                        <span class="font-semibold">180 kg</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
