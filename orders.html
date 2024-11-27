@@ -3,13 +3,9 @@
 <head>
     <title>Production & Orders - Ali MRP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <!-- Include Chart.js for production graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Include moment.js for date handling -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body class="bg-neutral-50">
-    <!-- Navigation -->
+    <!-- Top Navigation Bar -->
     <nav class="bg-stone-800 text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
@@ -19,7 +15,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-2xl font-bold text-white">Ali MRP</span>
-                        <span class="text-xs text-blue-200">Injection Molding Solutions</span>
+                        <span class="text-xs text-blue-200">Production Orders</span>
                     </div>
                 </div>
             </div>
@@ -31,316 +27,119 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <div class="container mx-auto p-8">
-        <!-- Production Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-600">
-                <h3 class="text-sm font-medium text-gray-500">Today's Orders</h3>
-                <p class="text-2xl font-bold" id="orderCount">0</p>
-                <p class="text-green-600 text-sm" id="orderTrend"></p>
-            </div>
-            
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-600">
-                <h3 class="text-sm font-medium text-gray-500">Production Progress</h3>
-                <p class="text-2xl font-bold" id="productionProgress">0%</p>
-                <p class="text-blue-600 text-sm" id="productionStatus"></p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-amber-600">
-                <h3 class="text-sm font-medium text-gray-500">Material Usage</h3>
-                <p class="text-2xl font-bold" id="materialUsage">0 kg</p>
-                <p class="text-amber-600 text-sm" id="materialStatus"></p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-stone-600">
-                <h3 class="text-sm font-medium text-gray-500">On-Time Delivery</h3>
-                <p class="text-2xl font-bold" id="deliveryRate">0%</p>
-                <p class="text-stone-600 text-sm" id="deliveryStatus"></p>
-            </div>
-        </div>
-
-        <!-- Action Bar -->
-        <div class="flex justify-between items-center mb-8">
+        <!-- Action Buttons -->
+        <div class="flex justify-between mb-8">
             <div class="flex space-x-4">
-                <button onclick="showNewOrderModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
+                <button onclick="showNewOrderModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
                     New Order
                 </button>
-                <button onclick="showScheduleModal()" class="bg-stone-700 hover:bg-stone-800 text-white px-4 py-2 rounded-lg flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    Production Schedule
+                <button onclick="showCustomerModal()" class="bg-stone-600 hover:bg-stone-700 text-white px-6 py-2 rounded-lg">
+                    Add Customer
                 </button>
             </div>
             <div class="flex space-x-4">
-                <div class="relative">
-                    <input type="text" placeholder="Search orders..." 
-                           class="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           onkeyup="searchOrders(this.value)">
-                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-                <select id="orderFilter" onchange="filterOrders(this.value)" 
-                        class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="all">All Orders</option>
-                    <option value="pending">Pending</option>
-                    <option value="inProgress">In Progress</option>
-                    <option value="completed">Completed</option>
+                <input type="text" placeholder="Search orders..." class="border rounded-lg px-4 py-2">
+                <select class="border rounded-lg px-4 py-2">
+                    <option>All Orders</option>
+                    <option>Pending</option>
+                    <option>In Progress</option>
+                    <option>Completed</option>
                 </select>
             </div>
         </div>
 
-        <!-- Main Content Tabs -->
+        <!-- Orders Table -->
         <div class="bg-white rounded-lg shadow">
-            <div class="border-b border-gray-200">
-                <nav class="flex -mb-px">
-                    <button onclick="switchTab('active-orders')" 
-                            class="tab-button active px-6 py-3 border-b-2 border-blue-500 text-blue-600">
-                        Active Orders
-                    </button>
-                    <button onclick="switchTab('schedule')" 
-                            class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                        Production Schedule
-                    </button>
-                    <button onclick="switchTab('capacity')" 
-                            class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                        Capacity Planning
-                    </button>
-                    <button onclick="switchTab('analysis')" 
-                            class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                        Analysis
-                    </button>
-                </nav>
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold">Active Orders</h2>
             </div>
-
-            <!-- Active Orders Tab -->
-            <div id="active-orders-tab" class="tab-content p-6">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Order ID
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Customer
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Product
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Quantity
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Due Date
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
-                        <!-- Orders will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Production Schedule Tab -->
-            <div id="schedule-tab" class="tab-content p-6 hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Calendar View -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <div id="calendar" class="w-full"></div>
-                    </div>
-                    
-                    <!-- Machine Schedule -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold mb-4">Machine Allocation</h3>
-                        <div id="machineSchedule" class="space-y-4">
-                            <!-- Machine schedules will be populated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Capacity Planning Tab -->
-            <div id="capacity-tab" class="tab-content p-6 hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Resource Load Chart -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold mb-4">Resource Load</h3>
-                        <canvas id="resourceLoadChart"></canvas>
-                    </div>
-                    
-                    <!-- Capacity Analysis -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold mb-4">Capacity Analysis</h3>
-                        <div id="capacityAnalysis" class="space-y-4">
-                            <!-- Capacity analysis will be populated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analysis Tab -->
-            <div id="analysis-tab" class="tab-content p-6 hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Production Trends -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold mb-4">Production Trends</h3>
-                        <canvas id="productionTrendsChart"></canvas>
-                    </div>
-                    
-                    <!-- Efficiency Metrics -->
-                    <div class="bg-white p-4 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold mb-4">Efficiency Metrics</h3>
-                        <div id="efficiencyMetrics" class="space-y-4">
-                            <!-- Efficiency metrics will be populated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Due Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Orders will be populated here by JavaScript -->
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- New Order Modal -->
+    <!-- Modals -->
     <div id="newOrderModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-4/5 md:w-2/3 lg:w-1/2 shadow-lg rounded-lg bg-white">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Create New Order</h3>
-                <button onclick="closeModal('newOrderModal')" class="text-gray-600 hover:text-gray-800">&times;</button>
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">New Order</h3>
+                <form id="newOrderForm" class="mt-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Customer</label>
+                        <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option>Select Customer</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Product</label>
+                        <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option>Select Product</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+                        <input type="number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                        <input type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button type="button" onclick="closeModal('newOrderModal')" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create Order</button>
+                    </div>
+                </form>
             </div>
-            <form id="newOrderForm" class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Customer</label>
-                        <select name="customer" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                            <option value="">Select Customer</option>
-                            <!-- Customer options will be populated dynamically -->
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Product</label>
-                        <select name="product" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                onchange="updateProductDetails(this.value)">
-                            <option value="">Select Product</option>
-                            <!-- Product options will be populated dynamically -->
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                        <input type="number" name="quantity" required 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                               onchange="calculateMaterialRequirements()">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Due Date</label>
-                        <input type="date" name="dueDate" required 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                               onchange="checkScheduleAvailability()">
-                    </div>
-                </div>
-
-                <!-- Material Requirements Section -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-medium text-gray-700 mb-2">Material Requirements</h4>
-                    <div id="materialRequirements" class="space-y-2">
-                        <!-- Material requirements will be calculated and displayed here -->
-                    </div>
-                </div>
-
-                <!-- Production Schedule Section -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class
-                        <h4 class="font-medium text-gray-700 mb-2">Production Schedule</h4>
-                    <div id="scheduleAvailability" class="space-y-2">
-                        <!-- Schedule availability will be displayed here -->
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeModal('newOrderModal')" 
-                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                        Cancel
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Create Order
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 
-    <!-- Add JavaScript for functionality -->
+    <!-- JavaScript -->
     <script>
-        // Sample data structure for orders
-        let orders = [];
-        let products = [];
-        let customers = [];
-        let materials = [];
+        // Sample data
+        let orders = [
+            {
+                id: 'ORD-001',
+                customer: 'Acme Corp',
+                product: 'Widget A',
+                quantity: 1000,
+                dueDate: '2024-12-01',
+                status: 'In Progress'
+            },
+            {
+                id: 'ORD-002',
+                customer: 'Tech Inc',
+                product: 'Container B',
+                quantity: 500,
+                dueDate: '2024-12-15',
+                status: 'Pending'
+            }
+        ];
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            initializePage();
-        });
-
-        function initializePage() {
-            fetchData();
-            setupEventListeners();
-            updateDashboardStats();
             renderOrdersTable();
-        }
-
-        function fetchData() {
-            // Simulate fetching data from backend
-            // In real implementation, these would be API calls
-            orders = getSampleOrders();
-            products = getSampleProducts();
-            customers = getSampleCustomers();
-            materials = getSampleMaterials();
-            
-            populateDropdowns();
-        }
-
-        function setupEventListeners() {
-            document.getElementById('newOrderForm').addEventListener('submit', handleNewOrder);
-        }
-
-        function getSampleOrders() {
-            return [
-                {
-                    id: 'ORD-001',
-                    customer: 'Acme Corp',
-                    product: 'Widget A',
-                    quantity: 5000,
-                    dueDate: '2024-12-15',
-                    status: 'In Progress'
-                },
-                // Add more sample orders as needed
-            ];
-        }
-
-        function updateDashboardStats() {
-            document.getElementById('orderCount').textContent = orders.length;
-            // Calculate other stats
-            const completedOrders = orders.filter(o => o.status === 'Completed').length;
-            const deliveryRate = ((completedOrders / orders.length) * 100).toFixed(1);
-            document.getElementById('deliveryRate').textContent = `${deliveryRate}%`;
-        }
+        });
 
         function renderOrdersTable() {
             const tbody = document.getElementById('ordersTableBody');
             tbody.innerHTML = orders.map(order => `
-                <tr>
+                <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4">${order.id}</td>
                     <td class="px-6 py-4">${order.customer}</td>
                     <td class="px-6 py-4">${order.product}</td>
@@ -352,8 +151,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <button onclick="viewOrder('${order.id}')" 
-                                class="text-blue-600 hover:text-blue-900">
+                        <button onclick="viewOrder('${order.id}')" class="text-blue-600 hover:text-blue-900">
                             View
                         </button>
                     </td>
@@ -370,27 +168,6 @@
             return classes[status] || 'bg-gray-100 text-gray-800';
         }
 
-        function handleNewOrder(event) {
-            event.preventDefault();
-            // Handle order creation
-            // Would typically make an API call here
-            const formData = new FormData(event.target);
-            const newOrder = {
-                id: `ORD-${orders.length + 1}`.padStart(7, '0'),
-                customer: formData.get('customer'),
-                product: formData.get('product'),
-                quantity: parseInt(formData.get('quantity')),
-                dueDate: formData.get('dueDate'),
-                status: 'Pending'
-            };
-            
-            orders.push(newOrder);
-            renderOrdersTable();
-            updateDashboardStats();
-            closeModal('newOrderModal');
-        }
-
-        // Modal functions
         function showNewOrderModal() {
             document.getElementById('newOrderModal').classList.remove('hidden');
         }
@@ -398,163 +175,6 @@
         function closeModal(modalId) {
             document.getElementById(modalId).classList.add('hidden');
         }
-
-        // Tab switching
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'text-blue-600');
-                btn.classList.add('border-transparent', 'text-gray-500');
-            });
-            
-            document.getElementById(`${tabId}-tab`).classList.remove('hidden');
-            event.currentTarget.classList.add('border-blue-500', 'text-blue-600');
-            event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
-        }
-    </script>
-    function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'text-blue-600');
-                btn.classList.add('border-transparent', 'text-gray-500');
-            });
-            
-            document.getElementById(`${tabId}-tab`).classList.remove('hidden');
-            event.currentTarget.classList.add('border-blue-500', 'text-blue-600');
-            event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
-        }
-
-        // Customer Management Functions
-        function showCustomerModal() {
-            document.getElementById('customerModal').classList.remove('hidden');
-        }
-
-        function handleCustomerSubmit(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const customerData = {
-                companyName: formData.get('companyName'),
-                contactPerson: formData.get('contactPerson'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                shippingAddress: formData.get('shippingAddress'),
-                billingAddress: formData.get('billingAddress'),
-                paymentTerms: formData.get('paymentTerms'),
-                id: `CUST-${customers.length + 1}`.padStart(7, '0')
-            };
-            
-            customers.push(customerData);
-            updateCustomerDropdowns();
-            closeModal('customerModal');
-            showNotification('Customer added successfully');
-        }
-
-        // Order Management Enhanced Functions
-        function viewOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-
-            const orderInfo = document.getElementById('orderInfo');
-            orderInfo.innerHTML = `
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="text-gray-600">Order ID:</div>
-                    <div class="font-medium">${order.id}</div>
-                    <div class="text-gray-600">Customer:</div>
-                    <div class="font-medium">${order.customer}</div>
-                    <div class="text-gray-600">Product:</div>
-                    <div class="font-medium">${order.product}</div>
-                    <div class="text-gray-600">Quantity:</div>
-                    <div class="font-medium">${order.quantity}</div>
-                    <div class="text-gray-600">Due Date:</div>
-                    <div class="font-medium">${order.dueDate}</div>
-                    <div class="text-gray-600">Status:</div>
-                    <div class="font-medium">${order.status}</div>
-                </div>
-            `;
-
-            updateProductionDetails(order);
-            updateQualityChecks(order);
-            document.getElementById('orderDetailsModal').classList.remove('hidden');
-        }
-
-        function updateProductionDetails(order) {
-            const productionDetails = document.getElementById('productionDetails');
-            // Calculate completion percentage
-            const completionPercentage = calculateCompletionPercentage(order);
-            productionDetails.innerHTML = `
-                <div class="space-y-3">
-                    <div class="flex justify-between">
-                        <span>Completion:</span>
-                        <span>${completionPercentage}%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${completionPercentage}%"></div>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Machine:</span>
-                        <span>Machine ${order.machineId || 1}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Started:</span>
-                        <span>${order.startDate || 'Not started'}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Estimated Completion:</span>
-                        <span>${calculateEstimatedCompletion(order)}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateQualityChecks(order) {
-            const qualityChecks = document.getElementById('qualityChecks');
-            qualityChecks.innerHTML = `
-                <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <span>Quality Rate:</span>
-                        <span class="font-medium text-green-600">98.5%</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Inspections:</span>
-                        <span>15/20</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Last Check:</span>
-                        <span>${new Date().toLocaleDateString()}</span>
-                    </div>
-                </div>
-                <button onclick="showQualityCheckForm()" 
-                        class="mt-3 w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
-                    Add Quality Check
-                </button>
-            `;
-        }
-
-        function calculateCompletionPercentage(order) {
-            // In a real application, this would fetch actual production data
-            return Math.floor(Math.random() * 100);
-        }
-
-        function calculateEstimatedCompletion(order) {
-            // This would use actual production rates and quantities in real application
-            return new Date(Date.now() + 86400000).toLocaleDateString();
-        }
-
-        function updateOrderStatus(status) {
-            // Implementation for updating order status
-            showNotification(`Order status updated to: ${status}`);
-            closeModal('orderDetailsModal');
-            renderOrdersTable();
-        }
-
-        function showNotification(message) {
-            // Implementation for showing notifications
-            alert(message); // Replace with proper notification system
-        }
-
     </script>
 </body>
 </html>
-</body>
-</html>
-
