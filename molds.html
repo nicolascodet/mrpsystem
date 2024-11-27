@@ -181,5 +181,203 @@
             </div>
 </div>
 
+        <!-- Process Parameters Tab Content -->
+            <div id="process-tab" class="tab-content p-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Temperature Zones -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Temperature Zones</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm text-gray-600">Nozzle (°C)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="230">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Zone 1 (°C)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="225">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Zone 2 (°C)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="220">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Zone 3 (°C)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="215">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-600">Mold Temperature (°C)</label>
+                                <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="40">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Injection Settings -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Injection Settings</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm text-gray-600">Injection Pressure (bar)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="800">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Holding Pressure (bar)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="600">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Injection Speed (mm/s)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="80">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Screw Speed (rpm)</label>
+                                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="60">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timing Settings -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Cycle Times</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm text-gray-600">Injection Time (s)</label>
+                                    <input type="number" step="0.1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="2.5">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Holding Time (s)</label>
+                                    <input type="number" step="0.1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="4.0">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Cooling Time (s)</label>
+                                    <input type="number" step="0.1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="10.0">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Total Cycle Time (s)</label>
+                                    <input type="number" step="0.1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="18.5" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Parameters -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Quality Parameters</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm text-gray-600">Shot Weight (g)</label>
+                                    <input type="number" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="125.45">
+                                </div>
+                                <div>
+                                    <label class="text-sm text-gray-600">Cushion (mm)</label>
+                                    <input type="number" step="0.1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" value="3.5">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-600">Notes</label>
+                                <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance Tab Content -->
+            <div id="maintenance-tab" class="tab-content p-6 hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Maintenance Schedule -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Maintenance Schedule</h3>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Mold</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Due Date</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-2">MOLD-001</td>
+                                    <td class="px-4 py-2">Preventive</td>
+                                    <td class="px-4 py-2">Dec 15, 2024</td>
+                                    <td class="px-4 py-2">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Upcoming
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Maintenance History -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold mb-4">Maintenance History</h3>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Work Done</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Technician</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-2">Nov 15, 2024</td>
+                                    <td class="px-4 py-2">Cleaning</td>
+                                    <td class="px-4 py-2">General cleaning and inspection</td>
+                                    <td class="px-4 py-2">John D.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Maintenance Actions -->
+                    <div class="bg-white p-6 rounded-lg shadow col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Schedule Maintenance</h3>
+                            <button class="bg-stone-800 text-white px-4 py-2 rounded-lg hover:bg-stone-700">
+                                New Maintenance Task
+                            </button>
+                        </div>
+                        <form class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Mold</label>
+                                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    <option>MOLD-001</option>
+                                    <option>MOLD-002</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Maintenance Type</label>
+                                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    <option>Preventive</option>
+                                    <option>Cleaning</option>
+                                    <option>Repair</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+Would you like me to continue with:
+1. The CAD/Drawings section (with technical drawings viewer)?
+2. The JavaScript code to make all these features functional?
+3. Move on to the Quality Control page?
+
+Let me know which part you want to see next!
+
 </body>
 </html>
