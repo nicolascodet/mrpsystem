@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mold Management - Guide MRP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Add Chart.js for visual data -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-neutral-50">
+    <!-- Navigation remains same as before -->
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto p-8">
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-amber-500">
+                <h3 class="text-sm font-medium text-gray-500">Molds in Production</h3>
+                <p class="text-2xl font-bold" id="activeMolds">8</p>
+                <p class="text-amber-600 text-sm">3 reaching maintenance soon</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                <h3 class="text-sm font-medium text-gray-500">Total Shot Count Today</h3>
+                <p class="text-2xl font-bold" id="totalShots">45,234</p>
+                <p class="text-green-600 text-sm">↑ 12% efficiency</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-red-500">
+                <h3 class="text-sm font-medium text-gray-500">Maintenance Due</h3>
+                <p class="text-2xl font-bold" id="maintenanceDue">3</p>
+                <p class="text-red-600 text-sm">Within next 7 days</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                <h3 class="text-sm font-medium text-gray-500">Average Cycle Time</h3>
+                <p class="text-2xl font-bold" id="avgCycleTime">18.5s</p>
+                <p class="text-blue-600 text-sm">Target: 20s</p>
+            </div>
+        </div>
+
+        <!-- Mold Management Tabs -->
+        <div class="bg-white rounded-lg shadow mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex -mb-px">
+                    <button onclick="showTab('library')" class="tab-button active px-6 py-3 border-b-2 border-blue-500 text-blue-600">
+                        Mold Library
+                    </button>
+                    <button onclick="showTab('maintenance')" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Maintenance
+                    </button>
+                    <button onclick="showTab('process')" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        Process Parameters
+                    </button>
+                    <button onclick="showTab('drawings')" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        CAD/Drawings
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Mold Library Tab Content -->
+            <div id="library-tab" class="tab-content p-6">
+                <div class="flex justify-between mb-6">
+                    <div class="flex space-x-4">
+                        <button onclick="showNewMoldModal()" class="bg-stone-800 text-white px-6 py-2 rounded-lg hover:bg-stone-700">
+                            Add New Mold
+                        </button>
+                        <button class="bg-stone-100 text-stone-800 px-6 py-2 rounded-lg hover:bg-stone-200">
+                            Import Data
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <input type="text" placeholder="Search molds..." class="border rounded-lg px-4 py-2">
+                        <select class="border rounded-lg px-4 py-2">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Maintenance</option>
+                            <option>Retired</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Mold Table -->
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Mold ID
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product Name
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Cavities
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total Shots
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Last Maintenance
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="moldTable">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add New Mold Modal -->
+            <div id="newMoldModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+                <div class="relative top-20 mx-auto p-5 border w-4/5 md:w-2/3 lg:w-1/2 shadow-lg rounded-lg bg-white">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">Add New Mold</h3>
+                        <button onclick="closeModal('newMoldModal')" class="text-gray-600 hover:text-gray-800">&times;</button>
+                    </div>
+                    <!-- New Mold Form -->
+                    <form id="newMoldForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Mold ID</label>
+                                <input type="text" name="moldId" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Product Name</label>
+                                <input type="text" name="productName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Number of Cavities</label>
+                                <input type="number" name="cavities" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Material Type</label>
+                                <select name="materialType" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                                    <option value="PP">PP</option>
+                                    <option value="PE">PE</option>
+                                    <option value="ABS">ABS</option>
+                                    <option value="PC">PC</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Shot Weight (g)</label>
+                                <input type="number" name="shotWeight" step="0.01" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Mold Specifications</label>
+                            <textarea name="specifications" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Maintenance Interval (shots)</label>
+                                <input type="number" name="maintenanceInterval" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Expected Lifetime (shots)</label>
+                                <input type="number" name="expectedLifetime" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end space-x-3 pt-4">
+                            <button type="button" onclick="closeModal('newMoldModal')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Add Mold
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+</div>
+
+</body>
+</html>
