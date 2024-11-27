@@ -412,5 +412,149 @@
             event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
         }
     </script>
+    function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+            event.currentTarget.classList.add('border-blue-500', 'text-blue-600');
+            event.currentTarget.classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        // Customer Management Functions
+        function showCustomerModal() {
+            document.getElementById('customerModal').classList.remove('hidden');
+        }
+
+        function handleCustomerSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const customerData = {
+                companyName: formData.get('companyName'),
+                contactPerson: formData.get('contactPerson'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                shippingAddress: formData.get('shippingAddress'),
+                billingAddress: formData.get('billingAddress'),
+                paymentTerms: formData.get('paymentTerms'),
+                id: `CUST-${customers.length + 1}`.padStart(7, '0')
+            };
+            
+            customers.push(customerData);
+            updateCustomerDropdowns();
+            closeModal('customerModal');
+            showNotification('Customer added successfully');
+        }
+
+        // Order Management Enhanced Functions
+        function viewOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const orderInfo = document.getElementById('orderInfo');
+            orderInfo.innerHTML = `
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="text-gray-600">Order ID:</div>
+                    <div class="font-medium">${order.id}</div>
+                    <div class="text-gray-600">Customer:</div>
+                    <div class="font-medium">${order.customer}</div>
+                    <div class="text-gray-600">Product:</div>
+                    <div class="font-medium">${order.product}</div>
+                    <div class="text-gray-600">Quantity:</div>
+                    <div class="font-medium">${order.quantity}</div>
+                    <div class="text-gray-600">Due Date:</div>
+                    <div class="font-medium">${order.dueDate}</div>
+                    <div class="text-gray-600">Status:</div>
+                    <div class="font-medium">${order.status}</div>
+                </div>
+            `;
+
+            updateProductionDetails(order);
+            updateQualityChecks(order);
+            document.getElementById('orderDetailsModal').classList.remove('hidden');
+        }
+
+        function updateProductionDetails(order) {
+            const productionDetails = document.getElementById('productionDetails');
+            // Calculate completion percentage
+            const completionPercentage = calculateCompletionPercentage(order);
+            productionDetails.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span>Completion:</span>
+                        <span>${completionPercentage}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${completionPercentage}%"></div>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Machine:</span>
+                        <span>Machine ${order.machineId || 1}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Started:</span>
+                        <span>${order.startDate || 'Not started'}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Estimated Completion:</span>
+                        <span>${calculateEstimatedCompletion(order)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateQualityChecks(order) {
+            const qualityChecks = document.getElementById('qualityChecks');
+            qualityChecks.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span>Quality Rate:</span>
+                        <span class="font-medium text-green-600">98.5%</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Inspections:</span>
+                        <span>15/20</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Last Check:</span>
+                        <span>${new Date().toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <button onclick="showQualityCheckForm()" 
+                        class="mt-3 w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                    Add Quality Check
+                </button>
+            `;
+        }
+
+        function calculateCompletionPercentage(order) {
+            // In a real application, this would fetch actual production data
+            return Math.floor(Math.random() * 100);
+        }
+
+        function calculateEstimatedCompletion(order) {
+            // This would use actual production rates and quantities in real application
+            return new Date(Date.now() + 86400000).toLocaleDateString();
+        }
+
+        function updateOrderStatus(status) {
+            // Implementation for updating order status
+            showNotification(`Order status updated to: ${status}`);
+            closeModal('orderDetailsModal');
+            renderOrdersTable();
+        }
+
+        function showNotification(message) {
+            // Implementation for showing notifications
+            alert(message); // Replace with proper notification system
+        }
+
+    </script>
 </body>
 </html>
+</body>
+</html>
+
