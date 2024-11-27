@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports - Guide MRP</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-neutral-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-stone-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-xl font-bold">Guide MRP</a>
+                <span class="text-stone-400">|</span>
+                <h1 class="text-lg">Reports & Analytics</h1>
+            </div>
+            <a href="index.html" class="text-stone-300 hover:text-white">← Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <!-- Report Types -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Production Reports</h3>
+                <div class="space-y-4">
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Daily Production Summary
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Machine Efficiency
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Quality Metrics
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Inventory Reports</h3>
+                <div class="space-y-4">
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Current Stock Levels
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Material Usage
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Reorder Points
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-bold mb-4">Cost Analysis</h3>
+                <div class="space-y-4">
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Production Costs
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Material Costs
+                    </button>
+                    <button class="w-full text-left p-2 hover:bg-gray-50 rounded">
+                        Efficiency Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold">Recent Reports</h2>
+            </div>
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Report Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Generated</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4">November Production Summary</td>
+                        <td class="px-6 py-4">Dec 1, 2024</td>
+                        <td class="px-6 py-4">Production</td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-900">View</button>
+                            <button class="text-blue-600 hover:text-blue-900 ml-4">Download</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
