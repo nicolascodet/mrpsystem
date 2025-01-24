@@ -82,13 +82,14 @@ export default function MachinesPage() {
     try {
       const data = {
         machine_id: parseInt(formData.get('machine_id') as string),
-        date: formData.get('date') as string,
         type: formData.get('type') as string,
         description: formData.get('description') as string,
+        start_time: formData.get('date') as string, // Using date as start_time
+        end_time: undefined, // Optional field
         technician: formData.get('technician') as string,
+        parts_used: '', // Required field, default to empty string
         cost: parseFloat(formData.get('cost') as string),
-        status: formData.get('status') as string,
-        next_maintenance_date: formData.get('next_maintenance_date') as string,
+        status: formData.get('status') as string
       };
 
       await createMaintenanceRecord(data);
