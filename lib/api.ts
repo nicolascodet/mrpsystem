@@ -5,6 +5,11 @@ const defaultHeaders = {
   'Accept': 'application/json'
 };
 
+const defaultOptions = {
+  headers: defaultHeaders,
+  mode: 'cors' as RequestMode
+};
+
 async function handleResponse(response: Response) {
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
@@ -20,10 +25,7 @@ async function handleResponse(response: Response) {
 
 // Parts API
 export async function getParts() {
-  const response = await fetch(`${API_URL}/parts`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/parts`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -37,40 +39,23 @@ export async function createPart(data: {
   compatible_machines: string[];
   setup_time: number;
 }) {
-  const response = await fetch(`${API_URL}/parts/`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/parts/`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 export async function updatePart(id: number, data: any) {
-  const response = await fetch(`${API_URL}/parts/${id}`, {
-    method: 'PUT',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/parts/${id}`, { ...defaultOptions, method: 'PUT', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 export async function deletePart(id: number) {
-  const response = await fetch(`${API_URL}/parts/${id}`, {
-    method: 'DELETE',
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/parts/${id}`, { ...defaultOptions, method: 'DELETE' });
   return handleResponse(response);
 }
 
 // Production Runs API
 export async function getProductionRuns() {
-  const response = await fetch(`${API_URL}/production-runs`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/production-runs`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -80,21 +65,13 @@ export async function createProductionRun(data: {
   start_time: string;
   status: string;
 }) {
-  const response = await fetch(`${API_URL}/production-runs`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/production-runs`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Quality Checks API
 export async function getQualityChecks() {
-  const response = await fetch(`${API_URL}/quality-checks`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/quality-checks`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -105,21 +82,13 @@ export async function createQualityCheck(data: {
   notes?: string;
   status: string;
 }) {
-  const response = await fetch(`${API_URL}/quality-checks`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/quality-checks`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Materials API
 export async function getMaterials() {
-  const response = await fetch(`${API_URL}/materials`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/materials`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -133,21 +102,13 @@ export async function createMaterial(data: {
   reorder_point: number;
   specifications: Record<string, any>;
 }) {
-  const response = await fetch(`${API_URL}/materials`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/materials`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Inventory API
 export async function getInventory() {
-  const response = await fetch(`${API_URL}/inventory`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/inventory`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -159,21 +120,13 @@ export async function createInventoryItem(data: {
   status: string;
   expiry_date?: string;
 }) {
-  const response = await fetch(`${API_URL}/inventory`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/inventory`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Suppliers API
 export async function getSuppliers() {
-  const response = await fetch(`${API_URL}/suppliers`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/suppliers`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -184,21 +137,13 @@ export async function createSupplier(data: {
   rating: number;
   active: boolean;
 }) {
-  const response = await fetch(`${API_URL}/suppliers`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/suppliers`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Machines API
 export async function getMachines() {
-  const response = await fetch(`${API_URL}/machines`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/machines`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -209,21 +154,13 @@ export async function createMachine(data: {
   hours_per_shift: number;
   current_job?: string;
 }) {
-  const response = await fetch(`${API_URL}/machines`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/machines`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Maintenance Records API
 export async function getMaintenanceRecords() {
-  const response = await fetch(`${API_URL}/maintenance-records`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/maintenance-records`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -238,21 +175,13 @@ export async function createMaintenanceRecord(data: {
   cost: number;
   status: string;
 }) {
-  const response = await fetch(`${API_URL}/maintenance-records`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/maintenance-records`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // BOM API
 export async function getBOMItems(partId: number) {
-  const response = await fetch(`${API_URL}/parts/${partId}/bom`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/parts/${partId}/bom`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -265,22 +194,14 @@ export async function createBOMItem(data: {
   cycle_time: number;
   notes?: string;
 }) {
-  const response = await fetch(`${API_URL}/bom-items`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/bom-items`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 // Customer API
 export async function getCustomers(search?: string) {
   const searchParams = search ? `?search=${encodeURIComponent(search)}` : '';
-  const response = await fetch(`${API_URL}/customers${searchParams}`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/customers${searchParams}`, defaultOptions);
   return handleResponse(response);
 }
 
@@ -291,19 +212,11 @@ export async function createCustomer(data: {
   contact_person: string;
   email: string;
 }) {
-  const response = await fetch(`${API_URL}/customers`, {
-    method: 'POST',
-    headers: defaultHeaders,
-    mode: 'cors',
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(`${API_URL}/customers`, { ...defaultOptions, method: 'POST', body: JSON.stringify(data) });
   return handleResponse(response);
 }
 
 export async function getCustomer(id: number) {
-  const response = await fetch(`${API_URL}/customers/${id}`, {
-    headers: defaultHeaders,
-    mode: 'cors',
-  });
+  const response = await fetch(`${API_URL}/customers/${id}`, defaultOptions);
   return handleResponse(response);
-} 
+}
