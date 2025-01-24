@@ -4,5 +4,8 @@
   "buildCommand": "next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
-  "outputDirectory": ".next"
-} 
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "${NEXT_PUBLIC_API_URL}"
+  }
+}
