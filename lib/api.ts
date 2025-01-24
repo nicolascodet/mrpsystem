@@ -2,13 +2,17 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json',
-  'Access-Control-Allow-Origin': '*'
+  'Accept': 'application/json'
 };
 
 async function handleResponse(response: Response) {
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
+    console.error('API Error:', {
+      status: response.status,
+      statusText: response.statusText,
+      error: errorData
+    });
     throw new Error(errorData?.detail || `API Error: ${response.statusText}`);
   }
   return response.json();
