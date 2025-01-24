@@ -61,11 +61,10 @@ export default function MachinesPage() {
     try {
       const data = {
         name: formData.get('name') as string,
-        model: formData.get('model') as string,
-        manufacturer: formData.get('manufacturer') as string,
-        installation_date: formData.get('installation_date') as string,
-        specifications: JSON.parse(formData.get('specifications') as string || '{}'),
-        status: 'operational',
+        status: true,  // default to operational
+        current_shifts: 1,  // default value
+        hours_per_shift: 8,  // default value
+        current_job: undefined  // optional field
       };
 
       await createMachine(data);
@@ -255,41 +254,6 @@ export default function MachinesPage() {
                   name="name"
                   required
                   className="w-full border border-indigo-200 rounded px-3 py-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-indigo-900 mb-1">Model</label>
-                <input
-                  type="text"
-                  name="model"
-                  required
-                  className="w-full border border-indigo-200 rounded px-3 py-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-indigo-900 mb-1">Manufacturer</label>
-                <input
-                  type="text"
-                  name="manufacturer"
-                  required
-                  className="w-full border border-indigo-200 rounded px-3 py-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-indigo-900 mb-1">Installation Date</label>
-                <input
-                  type="date"
-                  name="installation_date"
-                  required
-                  className="w-full border border-indigo-200 rounded px-3 py-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-indigo-900 mb-1">Specifications (JSON)</label>
-                <textarea
-                  name="specifications"
-                  className="w-full border border-indigo-200 rounded px-3 py-2"
-                  placeholder="{}"
                 />
               </div>
               <div className="flex justify-end space-x-4 mt-6">
