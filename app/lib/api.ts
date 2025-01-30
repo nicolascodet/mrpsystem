@@ -34,7 +34,6 @@ interface CreateCustomerData {
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -104,5 +103,5 @@ export async function deletePart(id: number): Promise<void> {
 }
 
 export async function getSalesOrders(): Promise<SalesOrder[]> {
-  return fetchApi<SalesOrder[]>('/sales-orders/');
+  return get<SalesOrder[]>('/sales-orders/');
 } 
