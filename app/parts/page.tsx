@@ -165,8 +165,8 @@ export default function PartsPage() {
   async function handleAddCustomer(e: React.FormEvent) {
     e.preventDefault();
     try {
-      const newCustomer = await createCustomer(customerFormData);
-      setCustomers([...customers, newCustomer]);
+      await createCustomer(customerFormData);
+      await loadCustomers(); // Refresh the customers list
       setShowCustomerModal(false);
       setCustomerFormData({
         name: '',
@@ -176,6 +176,7 @@ export default function PartsPage() {
         email: '',
       });
     } catch (err: any) {
+      console.error('Error creating customer:', err);
       setError(err.message);
     }
   }
@@ -195,6 +196,11 @@ export default function PartsPage() {
     setShowBOMModal(true);
   }
 
+  const handleShowAddModal = async () => {
+    await loadCustomers(); // Refresh customers list when opening the modal
+    setShowAddModal(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -208,7 +214,7 @@ export default function PartsPage() {
       <Title>Parts Management</Title>
       <div className="mt-6">
         <button
-          onClick={() => setShowAddModal(true)}
+          onClick={handleShowAddModal}
           className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
         >
           Add Part
