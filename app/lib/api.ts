@@ -76,96 +76,29 @@ export async function del(endpoint: string): Promise<void> {
 }
 
 export async function getParts(): Promise<Part[]> {
-  const response = await fetch(`${API_URL}/parts/`);
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to fetch parts');
-  }
-
-  return response.json();
+  return get<Part[]>('/parts/');
 }
 
 export async function getCustomers(): Promise<Customer[]> {
-  const response = await fetch(`${API_URL}/customers/`);
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to fetch customers');
-  }
-
-  return response.json();
+  return get<Customer[]>('/customers/');
 }
 
 export async function createCustomer(data: CreateCustomerData): Promise<Customer> {
-  const response = await fetch(`${API_URL}/customers/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to create customer');
-  }
-
-  return response.json();
+  return post<Customer>('/customers/', data);
 }
 
 export async function createPart(data: CreatePartData): Promise<Part> {
-  const response = await fetch(`${API_URL}/parts/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to create part');
-  }
-
-  return response.json();
+  return post<Part>('/parts/', data);
 }
 
 export async function createBOMItem(data: CreateBOMItemData): Promise<BOMItem> {
-  const response = await fetch(`${API_URL}/bom-items/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to create BOM item');
-  }
-
-  return response.json();
+  return post<BOMItem>('/bom-items/', data);
 }
 
 export async function getBOMItems(partId: number): Promise<BOMItem[]> {
-  const response = await fetch(`${API_URL}/parts/${partId}/bom-items`);
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to fetch BOM items');
-  }
-
-  return response.json();
+  return get<BOMItem[]>(`/parts/${partId}/bom-items`);
 }
 
 export async function deletePart(id: number): Promise<void> {
-  const response = await fetch(`${API_URL}/parts/${id}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to delete part');
-  }
+  return del(`/parts/${id}`);
 } 
