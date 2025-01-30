@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getParts, createPart, deletePart, getCustomers, createCustomer, getBOMItems, createBOMItem } from '@/lib/api';
+import { createPart, createCustomer, createBOMItem, deletePart } from '@/lib/api';
 import { Card, Title } from '@tremor/react';
 import type { Part, BOMItem, BOMItemFormData, Customer } from '../types';
+import { useStore } from '@/app/lib/store';
 
 interface PartFormData {
   part_number: string;
@@ -24,16 +25,27 @@ interface CustomerFormData {
 }
 
 export default function PartsPage() {
-  const [parts, setParts] = useState<Part[]>([]);
-  const [bomItems, setBomItems] = useState<BOMItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Global state
+  const {
+    parts,
+    customers,
+    bomItems,
+    loading,
+    error: globalError,
+    fetchAllData,
+    fetchBOMItems,
+    addPart,
+    addCustomer,
+    addBOMItem,
+    deletePart: deletePartFromStore,
+  } = useStore();
+
+  // Local state
+  const [formError, setFormError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [showBOMModal, setShowBOMModal] = useState(false);
   const [selectedPart, setSelectedPart] = useState<Part | null>(null);
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('');
   const [formData, setFormData] = useState<PartFormData>({
     part_number: '',
     description: '',
@@ -60,45 +72,14 @@ export default function PartsPage() {
   });
 
   useEffect(() => {
-    loadParts();
-    loadCustomers();
+    fetchAllData();
   }, []);
-
-  async function loadParts() {
-    try {
-      const data = await getParts();
-      setParts(data);
-      setError(null);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function loadCustomers() {
-    try {
-      const data = await getCustomers();
-      setCustomers(data);
-    } catch (err: any) {
-      console.error('Error loading customers:', err);
-    }
-  }
-
-  async function loadBOMItems(partId: number) {
-    try {
-      const data = await getBOMItems(partId);
-      setBomItems(data);
-    } catch (err: any) {
-      console.error('Error loading BOM items:', err);
-    }
-  }
 
   async function handleAddPart(e: React.FormEvent) {
     e.preventDefault();
     
     if (!formData.customer_id) {
-      setError("Please select a customer");
+      setFormError("Please select a customer");
       return;
     }
 
@@ -114,8 +95,8 @@ export default function PartsPage() {
         compatible_machines: formData.compatible_machines.split(',').map(m => m.trim()).filter(Boolean),
       };
       
-      await createPart(data);
-      loadParts();
+      const newPart = await createPart(data);
+      addPart(newPart);
       setShowAddModal(false);
       setFormData({
         part_number: '',
@@ -126,9 +107,9 @@ export default function PartsPage() {
         setup_time: '',
         compatible_machines: '',
       });
-      setError(null);
+      setFormError(null);
     } catch (err: any) {
-      setError(err.message);
+      setFormError(err.message);
     }
   }
 
@@ -147,8 +128,8 @@ export default function PartsPage() {
         notes: bomFormData.notes || undefined,
       };
       
-      await createBOMItem(data);
-      loadBOMItems(selectedPart.id);
+      const newBomItem = await createBOMItem(data);
+      addBOMItem(selectedPart.id, newBomItem);
       setBomFormData({
         child_part_id: '',
         quantity: '',
@@ -158,15 +139,15 @@ export default function PartsPage() {
         notes: '',
       });
     } catch (err: any) {
-      setError(err.message);
+      setFormError(err.message);
     }
   }
 
   async function handleAddCustomer(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await createCustomer(customerFormData);
-      await loadCustomers(); // Refresh the customers list
+      const newCustomer = await createCustomer(customerFormData);
+      addCustomer(newCustomer);
       setShowCustomerModal(false);
       setCustomerFormData({
         name: '',
@@ -176,28 +157,31 @@ export default function PartsPage() {
         email: '',
       });
     } catch (err: any) {
-      console.error('Error creating customer:', err);
-      setError(err.message);
+      setFormError(err.message);
     }
   }
 
   async function handleDeletePart(id: number) {
     try {
       await deletePart(id);
-      loadParts();
+      deletePartFromStore(id);
     } catch (err: any) {
-      setError(err.message);
+      setFormError(err.message);
     }
   }
 
-  function handleOpenBOM(part: any) {
+  function handleOpenBOM(part: Part) {
     setSelectedPart(part);
-    loadBOMItems(part.id);
+    fetchBOMItems(part.id);
     setShowBOMModal(true);
   }
 
-  const handleShowAddModal = async () => {
-    await loadCustomers(); // Refresh customers list when opening the modal
+  function handleCloseBOM() {
+    setShowBOMModal(false);
+    setSelectedPart(null);
+  }
+
+  const handleShowAddModal = () => {
     setShowAddModal(true);
   };
 
@@ -220,9 +204,9 @@ export default function PartsPage() {
           Add Part
         </button>
 
-        {error && (
+        {globalError && (
           <div className="mb-4 p-4 text-red-700 bg-red-100 rounded">
-            {error}
+            {globalError}
           </div>
         )}
 
@@ -308,7 +292,6 @@ export default function PartsPage() {
                       value={formData.customer_id}
                       onChange={(e) => {
                         setFormData({ ...formData, customer_id: e.target.value });
-                        setSelectedCustomer(e.target.value);
                       }}
                       className="w-full border rounded px-3 py-2"
                     >
@@ -487,7 +470,7 @@ export default function PartsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-indigo-100">
-                    {bomItems.map((item) => {
+                    {selectedPart && bomItems[selectedPart.id]?.map((item: BOMItem) => {
                       const childPart = parts.find(p => p.id === item.child_part_id);
                       return (
                         <tr key={item.id} className="hover:bg-indigo-50/50">
@@ -589,11 +572,7 @@ export default function PartsPage() {
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    setShowBOMModal(false);
-                    setSelectedPart(null);
-                    setBomItems([]);
-                  }}
+                  onClick={handleCloseBOM}
                   className="px-4 py-2 text-indigo-600 hover:text-indigo-800"
                 >
                   Close
