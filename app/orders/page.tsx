@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { PlusCircle } from 'lucide-react';
-import { get, post, getCustomers, getParts, getSalesOrders } from '@/app/lib/api';
+import { get, post, getCustomers, getParts, getSalesOrders, put } from '@/app/lib/api';
 
 interface SalesOrder {
   id: number;
@@ -457,29 +457,13 @@ export default function OrdersPage() {
                 <button
                   onClick={async () => {
                     try {
-                      const response = await fetch(`http://localhost:8000/sales-orders/${selectedOrder.id}/check-materials`, {
-                        method: 'GET',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        }
-                      });
+                      const result = await get(`/sales-orders/${selectedOrder.id}/check-materials`);
 
-                      if (!response.ok) {
-                        throw new Error('Failed to check materials');
-                      }
-
-                      const result = await response.json();
                       if (result.has_sufficient_materials) {
                         // Update order status to in_production
-                        await fetch(`http://localhost:8000/sales-orders/${selectedOrder.id}`, {
-                          method: 'PUT',
-                          headers: {
-                            'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({
-                            ...selectedOrder,
-                            status: 'in_production'
-                          }),
+                        await put(`/sales-orders/${selectedOrder.id}`, {
+                          ...selectedOrder,
+                          status: 'in_production'
                         });
                         setIsViewModalOpen(false);
                         loadData();
@@ -553,17 +537,7 @@ export default function OrdersPage() {
             <form onSubmit={async (e) => {
               e.preventDefault();
               try {
-                const response = await fetch('http://localhost:8000/customers/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(customerFormData),
-                });
-
-                if (!response.ok) {
-                  throw new Error('Failed to create customer');
-                }
+                const response = await post('/customers/', customerFormData);
 
                 // Refresh customers list
                 loadData();
