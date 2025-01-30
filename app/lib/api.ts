@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-import { BOMItem, Part, Customer } from '../types';
+import { BOMItem, Part, Customer, SalesOrder } from '../types';
 
 interface CreateBOMItemData {
   parent_part_id: number;
@@ -101,4 +101,8 @@ export async function getBOMItems(partId: number): Promise<BOMItem[]> {
 
 export async function deletePart(id: number): Promise<void> {
   return del(`/parts/${id}`);
+}
+
+export async function getSalesOrders(): Promise<SalesOrder[]> {
+  return fetchApi<SalesOrder[]>('/sales-orders/');
 } 

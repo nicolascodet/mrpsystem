@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { PlusCircle } from 'lucide-react';
-import { get, post } from '@/app/lib/api';
+import { get, post, getCustomers, getParts, getSalesOrders } from '@/app/lib/api';
 
 interface SalesOrder {
   id: number;
@@ -92,9 +92,9 @@ export default function OrdersPage() {
   async function loadData() {
     try {
       const [ordersData, partsData, customersData] = await Promise.all([
-        get<SalesOrder[]>('/sales-orders/'),
-        get<Part[]>('/parts/'),
-        get<Customer[]>('/customers/')
+        getSalesOrders(),
+        getParts(),
+        getCustomers()
       ]);
 
       setSalesOrders(ordersData);

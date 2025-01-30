@@ -39,4 +39,31 @@ export interface Customer {
   phone: string;
   contact_person: string;
   email: string;
+}
+
+export interface SalesOrder {
+  id: number;
+  order_number: string;
+  customer: {
+    id: number;
+    name: string;
+  };
+  due_date: string;
+  status: string;
+  total_amount: number;
+  payment_terms: string;
+  shipping_address: string;
+  notes?: string;
+  line_items: Array<{
+    id: number;
+    part_id: number;
+    quantity: number;
+    unit_price: number;
+    delivered_quantity: number;
+    total_amount: number;
+    part: {
+      part_number: string;
+      description: string;
+    };
+  }>;
 } 
