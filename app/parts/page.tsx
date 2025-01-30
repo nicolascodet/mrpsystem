@@ -305,8 +305,11 @@ export default function PartsPage() {
                   </label>
                   <div className="flex">
                     <select
-                      value={selectedCustomer}
-                      onChange={(e) => setSelectedCustomer(e.target.value)}
+                      value={formData.customer_id}
+                      onChange={(e) => {
+                        setFormData({ ...formData, customer_id: e.target.value });
+                        setSelectedCustomer(e.target.value);
+                      }}
                       className="w-full border rounded px-3 py-2"
                     >
                       <option value="">Select Customer</option>
