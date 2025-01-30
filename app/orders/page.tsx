@@ -129,6 +129,11 @@ export default function OrdersPage() {
     return statusColors[status.toLowerCase()] || 'bg-gray-500';
   };
 
+  const handleShowAddModal = async () => {
+    await loadData(); // Refresh all data including parts
+    setIsAddModalOpen(true);
+  };
+
   async function handleAddOrder(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -187,7 +192,7 @@ export default function OrdersPage() {
           Open Orders
         </h1>
         <button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={handleShowAddModal}
           className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all"
         >
           Create Order
@@ -334,7 +339,8 @@ export default function OrdersPage() {
                 <button
                   type="button"
                   className="mt-2 text-indigo-600 hover:text-indigo-800"
-                  onClick={() => {
+                  onClick={async () => {
+                    await getParts().then(setParts); // Refresh parts list
                     const container = document.getElementById('lineItems');
                     const itemCount = container?.children.length || 0;
                     const newItem = document.createElement('div');
