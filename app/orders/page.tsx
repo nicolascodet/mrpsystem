@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/table';
 import { PlusCircle } from 'lucide-react';
 import { get, post, getCustomers, getParts, getSalesOrders } from '@/app/lib/api';
+import { useStore } from '@/app/lib/store';
 
 interface SalesOrder {
   id: number;
@@ -75,15 +76,24 @@ interface MaterialCheckResult {
 }
 
 export default function OrdersPage() {
-  const [salesOrders, setSalesOrders] = useState<SalesOrder[]>([]);
-  const [parts, setParts] = useState<Part[]>([]);
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const {
+    salesOrders,
+    customers,
+    parts,
+    loading,
+    error: globalError,
+    fetchAllData,
+    fetchParts,
+    addCustomer,
+    addSalesOrder,
+    updateSalesOrder,
+  } = useStore();
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<SalesOrder | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isAddCustomerModalOpen, setIsAddCustomerModalOpen] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [customerFormData, setCustomerFormData] = useState<CustomerFormData>({
     name: '',
     contact_person: '',
@@ -95,27 +105,8 @@ export default function OrdersPage() {
   const [missingMaterials, setMissingMaterials] = useState<Array<{ material_name: string; missing_quantity: number; lead_time_days?: number }> | null>(null);
 
   useEffect(() => {
-    loadData();
+    fetchAllData();
   }, []);
-
-  async function loadData() {
-    try {
-      const [ordersData, partsData, customersData] = await Promise.all([
-        getSalesOrders(),
-        getParts(),
-        getCustomers()
-      ]);
-
-      setSalesOrders(ordersData);
-      setParts(partsData);
-      setCustomers(customersData);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error loading data:', error);
-      setError('Failed to load data');
-      setLoading(false);
-    }
-  }
 
   const getStatusColor = (status: string) => {
     const statusColors: { [key: string]: string } = {
@@ -129,8 +120,7 @@ export default function OrdersPage() {
     return statusColors[status.toLowerCase()] || 'bg-gray-500';
   };
 
-  const handleShowAddModal = async () => {
-    await loadData(); // Refresh all data including parts
+  const handleShowAddModal = () => {
     setIsAddModalOpen(true);
   };
 
@@ -168,14 +158,62 @@ export default function OrdersPage() {
         line_items: lineItems
       };
 
-      await post<SalesOrder>('/sales-orders/', orderData);
+      const newOrder = await post<SalesOrder>('/sales-orders/', orderData);
+      addSalesOrder(newOrder);
       setIsAddModalOpen(false);
-      loadData();
     } catch (error) {
       console.error('Error creating order:', error);
-      setError('Failed to create order');
+      setFormError('Failed to create order');
     }
   }
+
+  async function handleAddCustomer(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const newCustomer = await post<Customer>('/customers/', customerFormData);
+      addCustomer(newCustomer);
+      setIsAddCustomerModalOpen(false);
+      setCustomerFormData({
+        name: '',
+        contact_person: '',
+        email: '',
+        phone: '',
+        address: ''
+      });
+    } catch (error) {
+      console.error('Error creating customer:', error);
+      setFormError('Failed to create customer');
+    }
+  }
+
+  const handleAddLineItem = async () => {
+    await fetchParts(); // Refresh parts list
+    const container = document.getElementById('lineItems');
+    const itemCount = container?.children.length || 0;
+    const newItem = document.createElement('div');
+    newItem.className = 'grid grid-cols-4 gap-4';
+    newItem.innerHTML = `
+      <input type="hidden" name="itemCount" value="${itemCount + 1}" />
+      <div>
+        <select name="partId_${itemCount}" required class="w-full border border-indigo-200 rounded px-3 py-2">
+          <option value="">Select Part</option>
+          ${parts.map(part => `
+            <option value="${part.id}">${part.part_number} - ${part.description}</option>
+          `).join('')}
+        </select>
+      </div>
+      <div>
+        <input type="number" name="quantity_${itemCount}" required placeholder="Quantity" class="w-full border border-indigo-200 rounded px-3 py-2" min="1" />
+      </div>
+      <div>
+        <input type="number" name="unitPrice_${itemCount}" required placeholder="Unit Price" class="w-full border border-indigo-200 rounded px-3 py-2" min="0" step="0.01" />
+      </div>
+      <div>
+        <button type="button" class="text-red-600 hover:text-red-800" onclick="this.parentElement.parentElement.remove()">Remove</button>
+      </div>
+    `;
+    container?.appendChild(newItem);
+  };
 
   if (loading) {
     return (
@@ -199,9 +237,9 @@ export default function OrdersPage() {
         </button>
       </div>
 
-      {error && (
+      {(globalError || formError) && (
         <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
-          {error}
+          {globalError || formError}
         </div>
       )}
 
@@ -339,34 +377,7 @@ export default function OrdersPage() {
                 <button
                   type="button"
                   className="mt-2 text-indigo-600 hover:text-indigo-800"
-                  onClick={async () => {
-                    await getParts().then(setParts); // Refresh parts list
-                    const container = document.getElementById('lineItems');
-                    const itemCount = container?.children.length || 0;
-                    const newItem = document.createElement('div');
-                    newItem.className = 'grid grid-cols-4 gap-4';
-                    newItem.innerHTML = `
-                      <input type="hidden" name="itemCount" value="${itemCount + 1}" />
-                      <div>
-                        <select name="partId_${itemCount}" required class="w-full border border-indigo-200 rounded px-3 py-2">
-                          <option value="">Select Part</option>
-                          ${parts.map(part => `
-                            <option value="${part.id}">${part.part_number} - ${part.description}</option>
-                          `).join('')}
-                        </select>
-                      </div>
-                      <div>
-                        <input type="number" name="quantity_${itemCount}" required placeholder="Quantity" class="w-full border border-indigo-200 rounded px-3 py-2" min="1" />
-                      </div>
-                      <div>
-                        <input type="number" name="unitPrice_${itemCount}" required placeholder="Unit Price" class="w-full border border-indigo-200 rounded px-3 py-2" min="0" step="0.01" />
-                      </div>
-                      <div>
-                        <button type="button" class="text-red-600 hover:text-red-800" onclick="this.parentElement.parentElement.remove()">Remove</button>
-                      </div>
-                    `;
-                    container?.appendChild(newItem);
-                  }}
+                  onClick={handleAddLineItem}
                 >
                   + Add Line Item
                 </button>
@@ -497,7 +508,7 @@ export default function OrdersPage() {
                           }),
                         });
                         setIsViewModalOpen(false);
-                        loadData();
+                        fetchAllData();
                       } else {
                         // Show material shortage notification
                         setMissingMaterials(result.missing_materials || null);
@@ -505,7 +516,7 @@ export default function OrdersPage() {
                       }
                     } catch (error) {
                       console.error('Error checking materials:', error);
-                      setError('Failed to check materials');
+                      setFormError('Failed to check materials');
                     }
                   }}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -565,27 +576,7 @@ export default function OrdersPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 max-w-2xl w-full">
             <h2 className="text-2xl font-bold text-indigo-900 mb-6">Add New Customer</h2>
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              try {
-                const response = await post('/customers/', customerFormData);
-
-                // Refresh customers list
-                loadData();
-                setIsAddCustomerModalOpen(false);
-                // Reset form
-                setCustomerFormData({
-                  name: '',
-                  contact_person: '',
-                  email: '',
-                  phone: '',
-                  address: ''
-                });
-              } catch (error) {
-                console.error('Error creating customer:', error);
-                setError('Failed to create customer');
-              }
-            }} className="space-y-4">
+            <form onSubmit={handleAddCustomer} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-indigo-900 mb-1">Company Name</label>
                 <input
