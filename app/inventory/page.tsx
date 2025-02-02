@@ -412,7 +412,8 @@ export default function InventoryPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Unit</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Price</TableHead>
                   <TableHead>Lead Time</TableHead>
                 </TableRow>
               </TableHeader>
@@ -420,7 +421,12 @@ export default function InventoryPage() {
                 {materials.map((material) => (
                   <TableRow key={material.id}>
                     <TableCell>{material.name}</TableCell>
-                    <TableCell>{material.unit}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">
+                        {material.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>${material.price.toFixed(2)}</TableCell>
                     <TableCell>{material.lead_time_days} days</TableCell>
                   </TableRow>
                 ))}
