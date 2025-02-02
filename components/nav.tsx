@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { SignInButton } from '@/app/components/auth/SignInButton';
 
 export default function Nav() {
   const pathname = usePathname();
@@ -40,8 +41,11 @@ export default function Nav() {
               </Link>
             ))}
           </div>
+          <div className="flex items-center">
+            <SignInButton />
+          </div>
         </div>
       </div>
     </nav>
   );
-} 
+}
