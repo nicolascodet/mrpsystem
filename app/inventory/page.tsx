@@ -88,5 +88,33 @@ export default function InventoryPage() {
     );
   }
 
-  // ... rest of the component remains the same ...
+  return (
+    // ... rest of the component remains the same ...
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center justify-center min-w-[100px]
+        ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      {isSubmitting ? (
+        <LoadingSpinner />
+      ) : (
+        'Add Item'
+      )}
+    </button>
+    // ... rest of the component remains the same ...
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center justify-center min-w-[100px]
+        ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      {isSubmitting ? (
+        <LoadingSpinner />
+      ) : (
+        'Add Material'
+      )}
+    </button>
+    // ... rest of the component remains the same ...
+  );
 }

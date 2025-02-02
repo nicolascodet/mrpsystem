@@ -407,11 +407,11 @@ export default function OrdersPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center justify-center min-w-[100px]
                     ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? (
-                    <LoadingSpinner className="w-5 h-5 text-white" />
+                    <LoadingSpinner />
                   ) : (
                     'Create Order'
                   )}
@@ -659,11 +659,11 @@ export default function OrdersPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all flex items-center justify-center min-w-[100px]
                     ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? (
-                    <LoadingSpinner className="w-5 h-5 text-white" />
+                    <LoadingSpinner />
                   ) : (
                     'Add Customer'
                   )}
