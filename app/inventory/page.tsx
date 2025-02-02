@@ -372,29 +372,32 @@ export default function InventoryPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {inventory.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.material_name}</TableCell>
-                    <TableCell>{item.batch_number}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>{item.location}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={
-                          item.status === 'available'
-                            ? 'bg-green-100 text-green-800'
-                            : item.status === 'reserved'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : item.status === 'in_use'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-red-100 text-red-800'
-                        }
-                      >
-                        {item.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {inventory.map((item) => {
+                  const material = materials.find((m) => m.id === item.material_id);
+                  return (
+                    <TableRow key={item.id}>
+                      <TableCell>{material?.name || 'Unknown Material'}</TableCell>
+                      <TableCell>{item.batch_number}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                      <TableCell>{item.location}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={
+                            item.status === 'available'
+                              ? 'bg-green-100 text-green-800'
+                              : item.status === 'reserved'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : item.status === 'in_use'
+                              ? 'bg-blue-100 text-blue-800'
+                              : 'bg-red-100 text-red-800'
+                          }
+                        >
+                          {item.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </CardContent>
