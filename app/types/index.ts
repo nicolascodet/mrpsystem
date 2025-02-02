@@ -31,6 +31,8 @@ export interface BOMItem {
   notes?: string;
 }
 
+export type BOMItemFormData = Omit<BOMItem, 'id' | 'parent_part_id'>;
+
 export interface Material {
   id: number;
   name: string;
@@ -107,4 +109,4 @@ export interface PurchaseOrder {
     unit_price: number;
   }[];
   total_amount: number;
-} 
+}

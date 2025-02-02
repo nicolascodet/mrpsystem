@@ -19,6 +19,17 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
   return response.json();
 }
 
+async function get<T>(endpoint: string): Promise<T> {
+  return fetchApi<T>(endpoint);
+}
+
+async function post<T>(endpoint: string, data: any): Promise<T> {
+  return fetchApi<T>(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
 // Parts
 export async function getParts(): Promise<Part[]> {
   return fetchApi<Part[]>('/parts');
@@ -81,4 +92,11 @@ export async function createInventoryItem(data: Omit<InventoryItem, 'id'>): Prom
     method: 'POST',
     body: JSON.stringify(data),
   });
-} 
+}
+
+// Sales Orders
+export async function getSalesOrders(): Promise<any[]> {
+  return fetchApi<any[]>('/sales-orders');
+}
+
+export { get, post };

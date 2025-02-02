@@ -63,11 +63,11 @@ export default function PartsPage() {
     email: '',
   });
   const [bomFormData, setBomFormData] = useState<BOMItemFormData>({
-    child_part_id: '',
-    quantity: '',
+    child_part_id: 0,
+    quantity: 0,
     process_step: '',
-    setup_time: '',
-    cycle_time: '',
+    setup_time: 0,
+    cycle_time: 0,
     notes: '',
   });
 
@@ -120,22 +120,22 @@ export default function PartsPage() {
     try {
       const data = {
         parent_part_id: selectedPart.id,
-        child_part_id: parseInt(bomFormData.child_part_id),
-        quantity: parseFloat(bomFormData.quantity),
+        child_part_id: bomFormData.child_part_id,
+        quantity: bomFormData.quantity,
         process_step: bomFormData.process_step,
-        setup_time: parseFloat(bomFormData.setup_time),
-        cycle_time: parseFloat(bomFormData.cycle_time),
+        setup_time: bomFormData.setup_time,
+        cycle_time: bomFormData.cycle_time,
         notes: bomFormData.notes || undefined,
       };
       
       const newBomItem = await createBOMItem(data);
       addBOMItem(selectedPart.id, newBomItem);
       setBomFormData({
-        child_part_id: '',
-        quantity: '',
+        child_part_id: 0,
+        quantity: 0,
         process_step: '',
-        setup_time: '',
-        cycle_time: '',
+        setup_time: 0,
+        cycle_time: 0,
         notes: '',
       });
     } catch (err: any) {
@@ -500,67 +500,56 @@ export default function PartsPage() {
                     required
                     className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
                     value={bomFormData.child_part_id}
-                    onChange={(e) => setBomFormData({ ...bomFormData, child_part_id: e.target.value })}
+                    onChange={(e) => setBomFormData({ ...bomFormData, child_part_id: parseInt(e.target.value) || 0 })}
                   >
                     <option value="">Select a component</option>
                     {parts
-                      .filter(part => part.id !== selectedPart.id)
-                      .map(part => (
+                      .filter((p) => p.id !== selectedPart?.id)
+                      .map((part) => (
                         <option key={part.id} value={part.id}>
                           {part.part_number} - {part.description}
                         </option>
-                      ))
-                    }
+                      ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-indigo-900 mb-1">Process Step</label>
+                  <label className="block text-sm font-medium text-gray-700">Quantity</label>
+                  <input
+                    type="number"
+                    className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+                    value={bomFormData.quantity}
+                    onChange={(e) => setBomFormData({ ...bomFormData, quantity: parseFloat(e.target.value) || 0 })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Process Step</label>
                   <input
                     type="text"
-                    required
                     className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
                     value={bomFormData.process_step}
                     onChange={(e) => setBomFormData({ ...bomFormData, process_step: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-indigo-900 mb-1">Quantity</label>
+                  <label className="block text-sm font-medium text-gray-700">Setup Time (minutes)</label>
                   <input
                     type="number"
-                    required
-                    step="0.01"
-                    min="0"
-                    className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                    value={bomFormData.quantity}
-                    onChange={(e) => setBomFormData({ ...bomFormData, quantity: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-indigo-900 mb-1">Setup Time (minutes)</label>
-                  <input
-                    type="number"
-                    required
-                    step="0.1"
-                    min="0"
                     className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
                     value={bomFormData.setup_time}
-                    onChange={(e) => setBomFormData({ ...bomFormData, setup_time: e.target.value })}
+                    onChange={(e) => setBomFormData({ ...bomFormData, setup_time: parseFloat(e.target.value) || 0 })}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-indigo-900 mb-1">Cycle Time (minutes)</label>
+                  <label className="block text-sm font-medium text-gray-700">Cycle Time (minutes)</label>
                   <input
                     type="number"
-                    required
-                    step="0.1"
-                    min="0"
                     className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
                     value={bomFormData.cycle_time}
-                    onChange={(e) => setBomFormData({ ...bomFormData, cycle_time: e.target.value })}
+                    onChange={(e) => setBomFormData({ ...bomFormData, cycle_time: parseFloat(e.target.value) || 0 })}
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-indigo-900 mb-1">Notes</label>
+                  <label className="block text-sm font-medium text-gray-700">Notes</label>
                   <textarea
                     className="w-full border border-indigo-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
                     value={bomFormData.notes}
