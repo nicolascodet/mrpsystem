@@ -81,11 +81,12 @@ export default function OrdersPage() {
     salesOrders,
     customers,
     parts,
+    fetchParts,
+    addSalesOrder,
     loading,
     error: globalError,
     fetchAllData,
     addCustomer,
-    addSalesOrder,
     updateSalesOrder,
   } = useStore();
 
