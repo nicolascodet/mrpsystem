@@ -14,6 +14,7 @@ import {
 import { PlusCircle } from 'lucide-react';
 import { useStore } from '@/app/lib/store';
 import { LoadingPage, LoadingSpinner } from '@/app/components/ui/loading';
+import type { InventoryItem } from '@/app/types';
 
 export default function InventoryPage() {
   const {
@@ -42,10 +43,13 @@ export default function InventoryPage() {
 
     try {
       setIsSubmitting(true);
-      const data = {
+      const data: Omit<InventoryItem, 'id'> = {
         material_id: parseInt(formData.get('material_id') as string),
         quantity: parseInt(formData.get('quantity') as string),
+        batch_number: formData.get('batch_number') as string,
         location: formData.get('location') as string,
+        status: formData.get('status') as string,
+        expiry_date: formData.get('expiry_date') as string || undefined,
       };
 
       await addInventoryItem(data);
@@ -144,6 +148,15 @@ export default function InventoryPage() {
                   </select>
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-gray-700">Batch Number</label>
+                  <input
+                    type="text"
+                    name="batch_number"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Quantity</label>
                   <input
                     type="number"
@@ -160,6 +173,28 @@ export default function InventoryPage() {
                     name="location"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Status</label>
+                  <select
+                    name="status"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  >
+                    <option value="">Select a status</option>
+                    <option value="available">Available</option>
+                    <option value="reserved">Reserved</option>
+                    <option value="in_use">In Use</option>
+                    <option value="depleted">Depleted</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Expiry Date (Optional)</label>
+                  <input
+                    type="date"
+                    name="expiry_date"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 </div>
                 {formError && (
@@ -277,16 +312,34 @@ export default function InventoryPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Material</TableHead>
+                  <TableHead>Batch #</TableHead>
                   <TableHead>Quantity</TableHead>
                   <TableHead>Location</TableHead>
+                  <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {inventory.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{item.material_name}</TableCell>
+                    <TableCell>{item.batch_number}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
                     <TableCell>{item.location}</TableCell>
+                    <TableCell>
+                      <Badge
+                        className={
+                          item.status === 'available'
+                            ? 'bg-green-100 text-green-800'
+                            : item.status === 'reserved'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : item.status === 'in_use'
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-red-100 text-red-800'
+                        }
+                      >
+                        {item.status}
+                      </Badge>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
