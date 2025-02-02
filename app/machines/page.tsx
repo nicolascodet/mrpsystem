@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, Title, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@tremor/react';
 import { getMachines, getMaintenanceRecords, createMachine, createMaintenanceRecord } from '@/lib/api';
+import { LoadingPage, LoadingSpinner } from '../components/ui/loading';
 
 interface Machine {
   id: number;
@@ -25,6 +26,7 @@ interface MaintenanceRecord {
   cost: number;
   status: string;
   next_maintenance_date: string;
+  parts_used: string[];
 }
 
 export default function MachinesPage() {
@@ -34,22 +36,26 @@ export default function MachinesPage() {
   const [error, setError] = useState<string | null>(null);
   const [isAddMachineModalOpen, setIsAddMachineModalOpen] = useState(false);
   const [isAddMaintenanceModalOpen, setIsAddMaintenanceModalOpen] = useState(false);
+  const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    loadData();
+    fetchData();
   }, []);
 
-  async function loadData() {
+  async function fetchData() {
     try {
+      setLoading(true);
       const [machinesData, maintenanceData] = await Promise.all([
         getMachines(),
         getMaintenanceRecords()
       ]);
       setMachines(machinesData);
       setMaintenanceRecords(maintenanceData);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load data');
+      setError(null);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch data');
+    } finally {
       setLoading(false);
     }
   }
@@ -67,9 +73,11 @@ export default function MachinesPage() {
         current_job: undefined  // optional field
       };
 
+      setIsSubmitting(true);
       await createMachine(data);
+      setIsSubmitting(false);
       setIsAddMachineModalOpen(false);
-      loadData();
+      fetchData();
     } catch (err) {
       setError('Failed to add machine');
     }
@@ -92,18 +100,26 @@ export default function MachinesPage() {
         status: formData.get('status') as string
       };
 
+      setIsSubmitting(true);
       await createMaintenanceRecord(data);
+      setIsSubmitting(false);
       setIsAddMaintenanceModalOpen(false);
-      loadData();
+      fetchData();
     } catch (err) {
       setError('Failed to add maintenance record');
     }
   }
 
   if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (error) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-pulse text-indigo-600 font-medium">Loading machine data...</div>
+      <div className="p-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
       </div>
     );
   }
@@ -267,9 +283,15 @@ export default function MachinesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700"
+                  disabled={isSubmitting}
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Add Machine
+                  {isSubmitting ? (
+                    <LoadingSpinner className="w-5 h-5 text-white" />
+                  ) : (
+                    'Add Machine'
+                  )}
                 </button>
               </div>
             </form>
@@ -378,9 +400,15 @@ export default function MachinesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700"
+                  disabled={isSubmitting}
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Add Record
+                  {isSubmitting ? (
+                    <LoadingSpinner className="w-5 h-5 text-white" />
+                  ) : (
+                    'Add Record'
+                  )}
                 </button>
               </div>
             </form>
@@ -389,4 +417,4 @@ export default function MachinesPage() {
       )}
     </div>
   );
-} 
+}

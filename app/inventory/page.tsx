@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, Title, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@tremor/react';
 import type { Material, InventoryItem } from '../types';
 import { useStore } from '../lib/store';
+import { LoadingPage, LoadingSpinner } from '../components/ui/loading';
 
 export default function InventoryPage() {
   // Global state
@@ -20,6 +21,7 @@ export default function InventoryPage() {
   // Local state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAddMaterialModalOpen, setIsAddMaterialModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -73,12 +75,18 @@ export default function InventoryPage() {
   }
 
   if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (globalError) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="p-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+          {globalError}
+        </div>
       </div>
     );
   }
 
   // ... rest of the component remains the same ...
-} 
+}

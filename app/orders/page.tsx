@@ -14,6 +14,7 @@ import {
 import { PlusCircle } from 'lucide-react';
 import { get, post, getCustomers, getParts, getSalesOrders } from '@/app/lib/api';
 import { useStore } from '@/app/lib/store';
+import { LoadingPage, LoadingSpinner } from '@/app/components/ui/loading';
 
 interface SalesOrder {
   id: number;
@@ -83,7 +84,6 @@ export default function OrdersPage() {
     loading,
     error: globalError,
     fetchAllData,
-    fetchParts,
     addCustomer,
     addSalesOrder,
     updateSalesOrder,
@@ -103,6 +103,7 @@ export default function OrdersPage() {
   });
   const [showMaterialAlert, setShowMaterialAlert] = useState(false);
   const [missingMaterials, setMissingMaterials] = useState<Array<{ material_name: string; missing_quantity: number; lead_time_days?: number }> | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetchAllData();
@@ -158,18 +159,22 @@ export default function OrdersPage() {
         line_items: lineItems
       };
 
+      setIsSubmitting(true);
       const newOrder = await post<SalesOrder>('/sales-orders/', orderData);
       addSalesOrder(newOrder);
       setIsAddModalOpen(false);
     } catch (error) {
       console.error('Error creating order:', error);
       setFormError('Failed to create order');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   async function handleAddCustomer(e: React.FormEvent) {
     e.preventDefault();
     try {
+      setIsSubmitting(true);
       const newCustomer = await post<Customer>('/customers/', customerFormData);
       addCustomer(newCustomer);
       setIsAddCustomerModalOpen(false);
@@ -183,6 +188,8 @@ export default function OrdersPage() {
     } catch (error) {
       console.error('Error creating customer:', error);
       setFormError('Failed to create customer');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -216,9 +223,15 @@ export default function OrdersPage() {
   };
 
   if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (globalError) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-pulse text-indigo-600 font-medium">Loading orders...</div>
+      <div className="p-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+          {globalError}
+        </div>
       </div>
     );
   }
@@ -393,9 +406,15 @@ export default function OrdersPage() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700"
+                  disabled={isSubmitting}
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Create Order
+                  {isSubmitting ? (
+                    <LoadingSpinner className="w-5 h-5 text-white" />
+                  ) : (
+                    'Create Order'
+                  )}
                 </button>
               </div>
             </form>
@@ -639,9 +658,15 @@ export default function OrdersPage() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700"
+                  disabled={isSubmitting}
+                  className={`bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded hover:from-indigo-700 hover:to-purple-700 transition-all
+                    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  Add Customer
+                  {isSubmitting ? (
+                    <LoadingSpinner className="w-5 h-5 text-white" />
+                  ) : (
+                    'Add Customer'
+                  )}
                 </button>
               </div>
             </form>
@@ -650,4 +675,4 @@ export default function OrdersPage() {
       )}
     </div>
   );
-} 
+}
