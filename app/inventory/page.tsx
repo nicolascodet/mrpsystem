@@ -14,7 +14,7 @@ import {
 import { PlusCircle } from 'lucide-react';
 import { useStore } from '@/app/lib/store';
 import { LoadingPage, LoadingSpinner } from '@/app/components/ui/loading';
-import type { InventoryItem } from '@/app/types';
+import type { InventoryItem, Material } from '@/app/types';
 
 export default function InventoryPage() {
   const {
@@ -70,11 +70,15 @@ export default function InventoryPage() {
 
     try {
       setIsSubmitting(true);
-      const data = {
+      const data: Omit<Material, 'id'> = {
         name: formData.get('name') as string,
-        description: formData.get('description') as string,
-        unit: formData.get('unit') as string,
+        type: formData.get('type') as string,
+        supplier_id: parseInt(formData.get('supplier_id') as string),
+        price: parseFloat(formData.get('price') as string),
+        moq: parseFloat(formData.get('moq') as string),
         lead_time_days: parseInt(formData.get('lead_time_days') as string),
+        reorder_point: parseFloat(formData.get('reorder_point') as string),
+        specifications: JSON.parse(formData.get('specifications') as string || '{}'),
       };
 
       await addMaterial(data);
@@ -245,19 +249,47 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Description</label>
-                  <textarea
-                    name="description"
-                    rows={3}
+                  <label className="block text-sm font-medium text-gray-700">Type</label>
+                  <select
+                    name="type"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  >
+                    <option value="">Select a type</option>
+                    <option value="raw">Raw Material</option>
+                    <option value="component">Component</option>
+                    <option value="packaging">Packaging</option>
+                    <option value="consumable">Consumable</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Supplier ID</label>
+                  <input
+                    type="number"
+                    name="supplier_id"
+                    min="1"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Unit</label>
+                  <label className="block text-sm font-medium text-gray-700">Price</label>
                   <input
-                    type="text"
-                    name="unit"
+                    type="number"
+                    name="price"
+                    min="0"
+                    step="0.01"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Minimum Order Quantity (MOQ)</label>
+                  <input
+                    type="number"
+                    name="moq"
+                    min="0"
+                    step="0.01"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     required
                   />
@@ -269,6 +301,27 @@ export default function InventoryPage() {
                     name="lead_time_days"
                     min="0"
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Reorder Point</label>
+                  <input
+                    type="number"
+                    name="reorder_point"
+                    min="0"
+                    step="0.01"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Specifications (JSON)</label>
+                  <textarea
+                    name="specifications"
+                    rows={3}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    defaultValue="{}"
                     required
                   />
                 </div>
