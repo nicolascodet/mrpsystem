@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import AzureADProvider from "next-auth/providers/azure-ad";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 const handler = NextAuth({
   providers: [
@@ -11,14 +13,12 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account }) {
-      // Persist the access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
       }
       return token;
     },
-    async session({ session, token }) {
-      // Send properties to the client
+    async session({ session, token }: { session: Session; token: JWT }) {
       session.accessToken = token.accessToken;
       return session;
     },
