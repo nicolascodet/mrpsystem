@@ -12,8 +12,8 @@ export default function Nav() {
   };
 
   const links = [
-    { href: '/', label: 'Dashboard' },
-    { href: '/orders', label: 'Open Orders' },
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/', label: 'Open Orders' },
     { href: '/inventory', label: 'Inventory & Materials' },
     { href: '/parts', label: 'Parts & BOM' },
     { href: '/purchasing', label: 'Purchasing' },
