@@ -11,7 +11,7 @@ const handler = NextAuth({
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID!,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET!,
-      tenantId: process.env.AZURE_AD_TENANT_ID!, // Use your specific tenant ID
+      tenantId: "common", // Allow all Microsoft accounts
       authorization: {
         params: {
           redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`
