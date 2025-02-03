@@ -14,7 +14,8 @@ const handler = NextAuth({
       tenantId: "3aa4a235-b6e2-48d5-9195-7fcf05b459b0", // atelierframes.com tenant
       authorization: {
         params: {
-          redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`
+          redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`,
+          domain_hint: 'atelierframes.com' // Force authentication to your domain
         }
       }
     }),
