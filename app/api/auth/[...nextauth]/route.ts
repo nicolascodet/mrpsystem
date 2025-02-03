@@ -11,7 +11,7 @@ const handler = NextAuth({
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID!,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET!,
-      tenantId: process.env.AZURE_AD_TENANT_ID!, // Your organization's tenant ID
+      tenantId: "3aa4a235-b6e2-48d5-9195-7fcf05b459b0", // atelierframes.com tenant
       authorization: {
         params: {
           redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`
