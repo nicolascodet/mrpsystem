@@ -3,10 +3,8 @@ import AzureADProvider from "next-auth/providers/azure-ad";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
-// For Azure AD's redirect URI
-const VERCEL_URL = process.env.VERCEL_URL 
-  ? `https://${process.env.VERCEL_URL}`
-  : process.env.NEXTAUTH_URL || "http://localhost:3000";
+// Always use production URL for auth
+const PRODUCTION_URL = "https://mrpsystem.vercel.app";
 
 const handler = NextAuth({
   providers: [
@@ -16,7 +14,7 @@ const handler = NextAuth({
       tenantId: process.env.AZURE_AD_TENANT_ID,
       authorization: {
         params: {
-          redirect_uri: `${VERCEL_URL}/api/auth/callback/azure-ad`
+          redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`
         }
       }
     }),
