@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, Title, AreaChart, DonutChart } from '@tremor/react';
+import { Card, Title } from '@tremor/react';
 
 interface DashboardContentProps {
   userName: string;
@@ -39,9 +39,12 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
   return (
     <div className="space-y-8 p-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-          Unit MRP Dashboard
-        </h1>
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            Unit MRP Dashboard
+          </h1>
+          <p className="mt-2 text-gray-600">Welcome back, {userName}</p>
+        </div>
         <p className="text-sm text-blue-600">
           Last updated: {lastUpdated.toLocaleTimeString()}
         </p>
