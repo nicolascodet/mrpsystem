@@ -13,7 +13,7 @@ export default function Nav() {
 
   const links = [
     { href: '/dashboard', label: 'Dashboard' },
-    { href: '/', label: 'Open Orders' },
+    { href: '/orders', label: 'Open Orders' },
     { href: '/inventory', label: 'Inventory & Materials' },
     { href: '/parts', label: 'Parts & BOM' },
     { href: '/purchasing', label: 'Purchasing' },
