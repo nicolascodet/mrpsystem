@@ -5,22 +5,18 @@ import type { JWT } from "next-auth/jwt";
 
 // Always use production URL for auth
 const PRODUCTION_URL = "https://mrpsystem.vercel.app";
+const TENANT_ID = "0772737c-2e7f-49c6-a0d6-be3d35bad280";
 
 const handler = NextAuth({
   providers: [
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID!,
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET!,
-      tenantId: "3aa4a235-b6e2-48d5-9195-7fcf05b459b0", // atelierframes.com tenant
+      tenantId: TENANT_ID,
       authorization: {
-        url: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/oauth2/v2.0/authorize",
         params: {
-          redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`,
-          domain_hint: 'atelierframes.com'
+          redirect_uri: `${PRODUCTION_URL}/api/auth/callback/azure-ad`
         }
-      },
-      token: {
-        url: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/oauth2/v2.0/token"
       }
     }),
   ],
