@@ -1,7 +1,9 @@
-import type { Part, Customer, BOMItem, Material, InventoryItem } from '../types';
-
+// API URL from environment variables - Updated for Google Cloud Run backend
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+import type { Part, Customer, BOMItem, Material, InventoryItem } from '../types';
+
+// This function is used to make API requests to the backend
 async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
