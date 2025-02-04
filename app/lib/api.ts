@@ -5,20 +5,29 @@ import type { Part, Customer, BOMItem, Material, InventoryItem } from '../types'
 
 // This function is used to make API requests to the backend
 async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+  try {
+    console.log(`Making request to: ${API_BASE_URL}${endpoint}`);
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'API request failed');
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: `HTTP error! status: ${response.status}` }));
+      console.error('API Error:', error);
+      throw new Error(error.message || `Request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(`Response from ${endpoint}:`, data);
+    return data;
+  } catch (error) {
+    console.error('API Request failed:', error);
+    throw new Error(error instanceof Error ? error.message : 'Failed to fetch data from API');
   }
-
-  return response.json();
 }
 
 async function get<T>(endpoint: string): Promise<T> {
