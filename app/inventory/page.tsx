@@ -15,6 +15,7 @@ import { PlusCircle } from 'lucide-react';
 import { useStore } from '@/app/lib/store';
 import { LoadingPage, LoadingSpinner } from '@/app/components/ui/loading';
 import type { InventoryItem, Material } from '@/app/types';
+import { CSVActions } from '@/app/components/csv-actions';
 
 export default function InventoryPage() {
   const {
@@ -357,8 +358,18 @@ export default function InventoryPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Inventory Items</CardTitle>
+            <div className="flex gap-2">
+              <CSVActions entityType="inventory" onRefresh={fetchAllData} />
+              <button
+                onClick={() => setIsAddItemModalOpen(true)}
+                className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm"
+              >
+                <PlusCircle className="h-4 w-4" />
+                Add Item
+              </button>
+            </div>
           </CardHeader>
           <CardContent>
             <Table>

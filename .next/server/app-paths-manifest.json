@@ -1,1 +1,16 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/bom/page": "app/bom/page.js",
+  "/inventory/page": "app/inventory/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/machines/page": "app/machines/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/maintenance/page": "app/maintenance/page.js",
+  "/parts/page": "app/parts/page.js",
+  "/production-runs/page": "app/production-runs/page.js",
+  "/quality-checks/page": "app/quality-checks/page.js",
+  "/purchasing/page": "app/purchasing/page.js",
+  "/orders/page": "app/orders/page.js",
+  "/page": "app/page.js"
+}

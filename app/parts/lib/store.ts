@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { getParts, getCustomers, getInventory, getMaterials, createInventoryItem, createMaterial, getBOMItems, getSalesOrders, post } from './api';
-import type { Part, Customer, Material, InventoryItem } from '../types';
+import type { Part, Customer, Material, InventoryItem } from '../../types';
 
 interface AppState {
-  parts: (Part & { customer: Customer | undefined })[];
+  parts: Part[];
   customers: Customer[];
   inventory: InventoryItem[];
   materials: Material[];
@@ -45,14 +45,8 @@ export const useStore = create<AppState>((set, get) => ({
         getSalesOrders()
       ]);
 
-      // Join customer data with parts
-      const partsWithCustomers = partsData.map(part => ({
-        ...part,
-        customer: customersData.find(c => c.id === part.customer_id)
-      }));
-
       set({
-        parts: partsWithCustomers,
+        parts: partsData,
         customers: customersData,
         inventory: inventoryData,
         materials: materialsData,
@@ -62,113 +56,105 @@ export const useStore = create<AppState>((set, get) => ({
       });
     } catch (error) {
       set({ error: 'Failed to fetch data', loading: false });
-      console.error('Error fetching data:', error);
     }
   },
 
   fetchParts: async () => {
     try {
       const partsData = await getParts();
-      const customersData = await getCustomers();
-      const partsWithCustomers = partsData.map(part => ({
-        ...part,
-        customer: customersData.find(c => c.id === part.customer_id)
-      }));
-      set({ parts: partsWithCustomers, error: null });
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+      set({ parts: partsData, error: null });
+    } catch (error) {
+      set({ error: 'Failed to fetch parts' });
     }
   },
 
-  addInventoryItem: async (data: Omit<InventoryItem, 'id'>) => {
+  addInventoryItem: async (data) => {
     try {
       const newItem = await createInventoryItem(data);
-      set((state) => ({
+      set(state => ({
         inventory: [...state.inventory, newItem],
         error: null
       }));
       return newItem;
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+    } catch (error) {
+      set({ error: 'Failed to add inventory item' });
+      throw error;
     }
   },
 
-  addMaterial: async (data: Omit<Material, 'id'>) => {
+  addMaterial: async (data) => {
     try {
       const newMaterial = await createMaterial(data);
-      set((state) => ({
+      set(state => ({
         materials: [...state.materials, newMaterial],
         error: null
       }));
       return newMaterial;
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+    } catch (error) {
+      set({ error: 'Failed to add material' });
+      throw error;
     }
   },
 
   addSalesOrder: async (data) => {
     try {
-      const newOrder = await post('/sales-orders', data);
-      set((state) => ({
-        salesOrders: [...state.salesOrders, newOrder],
+      const response = await post('/sales-orders/', data);
+      set(state => ({
+        salesOrders: [...state.salesOrders, response],
         error: null
       }));
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+    } catch (error) {
+      set({ error: 'Failed to add sales order' });
+      throw error;
     }
   },
 
   updateSalesOrder: async (id, data) => {
     try {
-      const updatedOrder = await post(`/sales-orders/${id}`, data);
-      set((state) => ({
-        salesOrders: state.salesOrders.map(order => 
-          order.id === id ? updatedOrder : order
+      const response = await post(`/sales-orders/${id}`, data);
+      set(state => ({
+        salesOrders: state.salesOrders.map(order =>
+          order.id === id ? { ...order, ...response } : order
         ),
         error: null
       }));
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+    } catch (error) {
+      set({ error: 'Failed to update sales order' });
+      throw error;
     }
   },
 
-  fetchBOMItems: async (partId: number) => {
+  fetchBOMItems: async (partId) => {
     try {
       const items = await getBOMItems(partId);
-      set((state) => ({
-        bomItems: { ...state.bomItems, [partId]: items },
+      set(state => ({
+        bomItems: {
+          ...state.bomItems,
+          [partId]: items
+        },
         error: null
       }));
-    } catch (err: any) {
-      set({ error: err.message });
-      throw err;
+    } catch (error) {
+      set({ error: 'Failed to fetch BOM items' });
     }
   },
 
-  addPart: (part: Part) => {
-    set((state) => {
-      const customer = state.customers.find(c => c.id === part.customer_id);
-      return {
-        parts: [...state.parts, { ...part, customer }],
-        error: null
-      };
-    });
+  addPart: (part) => {
+    set(state => ({
+      parts: [...state.parts, part],
+      error: null
+    }));
   },
 
-  addCustomer: (customer: Customer) => {
-    set((state) => ({
+  addCustomer: (customer) => {
+    set(state => ({
       customers: [...state.customers, customer],
       error: null
     }));
   },
 
-  addBOMItem: (parentId: number, item: any) => {
-    set((state) => ({
+  addBOMItem: (parentId, item) => {
+    set(state => ({
       bomItems: {
         ...state.bomItems,
         [parentId]: [...(state.bomItems[parentId] || []), item]
@@ -177,8 +163,8 @@ export const useStore = create<AppState>((set, get) => ({
     }));
   },
 
-  deletePart: (id: number) => {
-    set((state) => ({
+  deletePart: (id) => {
+    set(state => ({
       parts: state.parts.filter(part => part.id !== id),
       error: null
     }));

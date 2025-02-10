@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createPart, createCustomer, createBOMItem, deletePart } from '@/lib/api';
 import { Card, Title } from '@tremor/react';
 import type { Part, BOMItem, BOMItemFormData, Customer } from '../types';
-import { useStore } from '@/app/lib/store';
+import { useStore } from './lib/store';
+import { CSVActions } from "../components/csv-actions";
+import { createPart, createCustomer, createBOMItem, deletePart } from './lib/api';
 
 interface PartFormData {
   part_number: string;
@@ -195,62 +196,63 @@ export default function PartsPage() {
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>Parts Management</Title>
-      <div className="mt-6">
-        <button
-          onClick={handleShowAddModal}
-          className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          Add Part
-        </button>
-
-        {globalError && (
-          <div className="mb-4 p-4 text-red-700 bg-red-100 rounded">
-            {globalError}
-          </div>
-        )}
-
-        <Card>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Part Number</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {parts.map((part) => (
-                  <tr key={part.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">{part.part_number}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{part.description}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{part.customer?.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">${part.price.toFixed(2)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                      <button
-                        onClick={() => handleOpenBOM(part)}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        BOM
-                      </button>
-                      <button
-                        onClick={() => handleDeletePart(part.id)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+      <div className="flex justify-between items-center mb-6">
+        <Title>Parts Management</Title>
+        <div className="flex gap-4">
+          <CSVActions entityType="parts" onRefresh={fetchAllData} />
+          <button
+            onClick={handleShowAddModal}
+            className="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+          >
+            Add Part
+          </button>
+        </div>
       </div>
+      {globalError && (
+        <div className="mb-4 p-4 text-red-700 bg-red-100 rounded">
+          {globalError}
+        </div>
+      )}
 
+      <Card>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Part Number</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {parts.map((part) => (
+                <tr key={part.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{part.part_number}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{part.description}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{part.customer?.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">${part.price.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                    <button
+                      onClick={() => handleOpenBOM(part)}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
+                      BOM
+                    </button>
+                    <button
+                      onClick={() => handleDeletePart(part.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
       {/* Add Part Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
